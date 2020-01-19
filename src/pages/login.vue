@@ -49,32 +49,12 @@ export default {
       }
     };
   },
-  computed: {
-    user: {
-      get() {
-        return this.$store.state.ruleForm.user;
-      },
-      set(newVal) {
-        this.$store.commit("setUser", newVal);
-      }
-    },
-    pwd: {
-      get() {
-        return this.$store.state.ruleForm.pwd;
-      },
-      set(newVal) {
-        this.$store.commit("setPwd", newVal);
-      }
-    }
-  },
   created() {},
   methods: {
     submitForm(formName) {
-      this.user = this.ruleForm.user;
-      this.pwd = this.ruleForm.pwd;
       this.$refs.ruleForm.validate(valid => {
         if (valid) {
-          this.$store.dispatch("getLogin");
+          this.$store.dispatch("getLogin",{username:this.ruleForm.user,password:this.ruleForm.pwd});
         } else {
           console.log("用户名或密码错误");
         }
@@ -90,7 +70,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 #login {
-  background: url("~@/assets/bg.jpg") center center no-repeat;
+  background: url("~@/assets/images/bg.jpg") center center no-repeat;
   height: 700px;
   position: fixed;
   top: 0;

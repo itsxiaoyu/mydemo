@@ -22,25 +22,28 @@
 </template>
 
 <script>
-import {mapState} from 'vuex'
+import { mapState } from "vuex";
 export default {
   name: "HeaderBar",
   data() {
-    return {
-    };
+    return {};
   },
   created() {
+    this.initName();
   },
-   computed: {
-    ...mapState({
-      title: state => state.login.title
-    }),
+  computed: {
+    // ...mapState({
+    //   title: state => state.login.title
+    // }),
   },
   methods: {
     loginOut() {
       this.$store.dispatch("loginOut");
     },
-   
+    initName() {
+      let ses = window.sessionStorage;
+      this.title = ses.username;
+    }
   }
 };
 </script>

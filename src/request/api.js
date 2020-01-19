@@ -1,8 +1,8 @@
-import { get,getAwait} from './http'
-
+import { get,post,getAwait,postAwait} from './http'
+let BASE_URL =  'http://localhost:4000' 
 //登录
 export function getLogin(username,password){
-	return get('/getLogin',username,password)
+	return postAwait(BASE_URL+'/api/login',username,password)
 }
 //home页面表格信息
 export  function getUserInfo(param){

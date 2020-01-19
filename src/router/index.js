@@ -1,52 +1,59 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Login from '@/pages/login'
-import User from '@/pages/user'
-import Admin from '@/pages/admin'
-import Menu1 from '@/pages/menu1'
-import Menu2 from '@/pages/menu2'
-import Menu3 from '@/pages/menu3'
-import Menu4 from '@/pages/menu4'
-
 Vue.use(Router)
 
 export default new Router({
   routes: [
-    { path: '/', component: User ,meta:{needLogin:true}},//needLogin判断是否需要登录才可以进入
-    { path: '/login', component: Login },
+    //needLogin判断是否需要登录才可以进入
+    { path: '/', component:()=>import('@/pages/login')},
+    { path: '/login', component:()=>import('@/pages/login')},
     { 
       path: '/user',
-      component: User,
+      component:()=>import('@/pages/user'),
       meta:{needLogin:true},
       children:[
         {
           path:'/menu1',
-          component:Menu1
+          component:()=>import('@/pages/menu1'),
+          meta:{needLogin:true},
         },
         {
           path:'/menu2',
-          component:Menu2
+          component:()=>import('@/pages/menu2'),
+          meta:{needLogin:true},
         },
       ]
     },
     { 
       path: '/admin',
-      component: Admin,
+      component:()=>import('@/pages/admin'),
       meta:{needLogin:true},
       children:[
         {
           path:'/index',
-          component:()=>import('@/pages/index')
+          name:'index',
+          component:()=>import('@/pages/index'),
+          meta:{needLogin:true,title:'首页'},
         },
         {
           path:'/menu3',
-          component:Menu3
+          name:'menu3',
+          component:()=>import('@/pages/menu3'),
+          meta:{needLogin:true,title:'教练列表'},
+
         },
         {
           path:'/menu4',
-          component:Menu4
+          name:'menu4',
+          component:()=>import('@/pages/menu4'),
+          meta:{needLogin:true,title:'请假记录'},
+
         },
       ]
     },
   ]
 })
+const originalPush = Router.prototype.push
+Router.prototype.push = function push (location) {
+  return originalPush.call(this, location).catch(err => err)
+}

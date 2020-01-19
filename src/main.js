@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router/index.js'
+import '@/assets/styles/common.scss'
 import Element from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 Vue.use(Element)
@@ -14,12 +15,13 @@ import Fragment from 'vue-fragment'
 Vue.use(Fragment.Plugin)
 
 Vue.config.productionTip = false
-if (process.env.NODE_ENV !== 'production') require('./mock/index.js')
+require('./mock/index.js')
 
 router.beforeEach((to,from,next)=>{
   if(to.meta.needLogin){
     //当页面需要登录的时候判断浏览器是否有sessionStorage
-    if(window.sessionStorage.data){
+    // window.sessionStorage.removeItem("username");
+    if(window.sessionStorage.username){
       next()
     }else{
       next('/login')

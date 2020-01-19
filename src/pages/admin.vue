@@ -5,8 +5,12 @@
       <aside-bar :menuList="menu"></aside-bar>
       <div style="display:inline-block;height:600px;width:100%;">
         <tabs></tabs>
-        管理员界面
-        <router-view></router-view>
+        <div style="padding:20px;">
+          <keep-alive>
+            <router-view></router-view>
+          </keep-alive>
+          
+        </div>
       </div>
     </el-container>
     
@@ -47,4 +51,5 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+
 </style>

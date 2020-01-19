@@ -8,15 +8,19 @@
 >
 > 3.添加element作为项目的UI
 >
-> 4.添加axios作为请求工具，封装axios
+> 4.添加axios作为请求工具，封装axios，可使用get，post，getAwait，postAwait
 >
 > 5.添加mockjs使项目支持mock。mock模块化
 >
-> 6.实现登录验证。进行路由守卫。分角色登录
+> 6.实现登录验证。进行路由守卫。分角色登录。头部的用户名称存session，页面刷新不会消失。
 >
 > 7.渲染菜单组件，根据传值不同渲染不同菜单
 >
-> 8.tab导航监听路由
+> 8.tab导航监听路由，tab标签改变路由改变。路由改变tab标签改变
+>
+> 9.tab页面刷新路由不变，tab切换保持tab页内容不变
+>
+> 10.mysql作为数据库，nodejs写数据库操作，连接后台
 
 ## Build Setup
 
@@ -111,6 +115,8 @@ npm install --save-dev sass-loader
 使用
 
 lang="scss"
+
+**全局样式。文件夹assets/styles/common.scss**
 
 ###### 2.4引入vuex
 
@@ -381,111 +387,280 @@ store/modules/menu.js。**通过传递的index不同从而判断渲染哪个菜�
 </template>
 
 <script>
-import { mapActions, mapState, mapMutations } from 'vuex'
+import { mapActions, mapState, mapMutations } from "vuex";
+import { getMenu1 } from "@/request/api";
 export default {
   name: "Tabs",
   data() {
     return {};
   },
-    computed: {
+  computed: {
     ...mapState({
-      tabs: state=>state.menu.tabs,
-      activeItem: state=>state.menu.activeItem
-    })
+      menu: state => state.menu.menu,
+      tabs: state => state.menu.tabs
+    }),
+    activeItem: {
+      get() {
+        return this.$store.state.menu.activeItem;
+      },
+      set(val) {
+        this.$store.commit("switchTab", val);
+      }
+    }
   },
+  mounted() {
+    this.$store.dispatch("getTab", {
+      index: this.$route.path,
+      title: this.$route.meta.title
+    });
+  },
+  watch: {
+    // 判断路由是否已经打开
+    $route(to, from) {
+      let flag = false;
+      //已打开，切换至当前路由标签
+      for (let item of this.tabs) {
+        let name = "/" + to.name;
+        if (item.index === name) {
+          this.$store.commit("switchTab", name);
+          this.$router.push({ path: name });
+          flag = true;
+          break;
+        }
+      }
+      //未打开,增加tab标签并切换
+      if (!flag) {
+        let target = this.menu.map(a => a.children).flat().find(f => f.index === to.path);
+        this.$store.commit("addTab", {
+          index: to.path,
+          label: target.name,
+          closable: true
+        });
+        this.$store.commit("switchTab", to.path);
+      }
+    }
+  },
+
   methods: {
-    //tab切换。传递router
-    tabClick (e) {
-      this.$store.dispatch('clickMenuItem',{index:e.name})
-      this.$router.push({ path: e.name })
+    //tab切换
+    tabClick(e) {
+      this.$store.dispatch("clickMenuItem", { index: e.name });
+      this.$router.push({ path: e.name });
     },
     //tab移除
-    removeTab (e) {
-      this.$router.push({ path: this.activeItem })
-      this.$store.dispatch('closeTab',{index:e})
+    removeTab(e) {
+      this.$store.dispatch("closeTab", { index: e });
+      this.$router.push({ path: this.activeItem });
     }
   }
 };
 </script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped lang="scss">
+</style>
+
 
 ```
 
 store/medules/menu.js
 
 ```
-import { getMenu1 } from "../../request/api.js";
+import { getMenu1, getMenu2 } from "../../request/api.js";
+
 const state = {
+  //菜单
   menu: [],
   tabs: [
     {
-      label: '首页',
-      index: 'index'
+      label: "首页",
+      index: "/index"
     }
   ],
-  activeItem: 'index' // 默认选中首页
+  activeItem: "/index" // 默认选中首页
 };
 const mutations = {
-  initMenu (state, param) {
-    state.menu = param.menu
+  initMenu(state, param) {
+    state.menu = param.menu;
   },
-  initTabs (state, tabs) {
-    state.tabs = tabs
+  initTabs(state, tabs) {
+    state.tabs = tabs;
   },
-//添加tab
-  addTab (state, tab) {
-    state.tabs.push(tab)
+  addTab(state, tab) {
+    state.tabs.push(tab);
   },
-  //切换tab
-  switchTab (state, nowIndex) {
-    state.activeItem = nowIndex
+  switchTab(state, nowIndex) {
+    state.activeItem = nowIndex;
   }
 };
 const actions = {
-  //获得菜单数据
-  getMenu (context) {
-    getMenu1().then(res=>{
-      let menumap=res.data
-      context.commit('initMenu', {menu:menumap})
-    })
+  //获取菜单
+  getMenu(context, { index: index }) {
+    if (index === 1) {
+      getMenu1().then(res => {
+        let menumap = res.data;
+        context.commit("initMenu", { menu: menumap });
+      });
+    } else {
+      getMenu2().then(res => {
+        let menumap = res.data;
+        context.commit("initMenu", { menu: menumap });
+      });
+    }
   },
-  //点击菜单，接受index路由
-  clickMenuItem (context, {index:index}) {
-    if (index !== 'index') {
-      var tab = context.state.tabs.find(f => f.index === index)
+  //获取tab
+  getTab(context, { index: index, title: title }) {
+    if (index !== "/index") {
+      context.state.activeItem = index;
+      context.commit("switchTab", index);
+      context.commit("addTab", { index: index, label: title, closable: true });
+    } else {
+      context.commit("switchTab", index);
+    }
+  },
+  //点击菜单
+  clickMenuItem(context, { index: index }) {
+    if (index !== "/index") {
+      var tab = context.state.tabs.find(f => f.index === index);
       if (!tab) {
-        let menu = {}
-        menu = context.state.menu.find(f => f.index === index)
+        let menu = {};
+        menu = context.state.menu.find(f => f.index === index);
         if (!menu) {
-          menu = context.state.menu.map(a => a.children).flat().find(f => f.index === index)
+          menu = context.state.menu.map(a => a.children).flat().find(f => f.index === index);
         }
         let newTab = {
           label: menu.name,
           index: menu.index,
           closable: true
-        }
-        context.commit('addTab', newTab)
+        };
+        context.commit("addTab", newTab);
       }
     }
-    context.commit('switchTab', index)
+    context.commit("switchTab", index);
   },
   //关闭tab
-  closeTab (context, {index:index}) {
-    let indexNum = context.state.tabs.findIndex(f => f.index === index)
-    let activeItem = context.state.activeItem
-    let newTabs = context.state.tabs.filter(f => f.index !== index)
-    context.commit('initTabs', newTabs)
-    if (activeItem === index) {
-      context.commit('switchTab', indexNum === 0 ? 'index' : newTabs[indexNum - 1].index)
+  closeTab(context, { index: index }) {
+    let indexNum = context.state.tabs.findIndex(f => f.index === index);
+    let newTabs = context.state.tabs.filter(f => f.index !== index);
+    context.commit("initTabs", newTabs);
+    let activeItem = newTabs[indexNum - 1].index;
+    if (activeItem === "/index") {
+      context.commit("switchTab", "/index");
+    } else {
+      context.commit("switchTab", newTabs[indexNum - 1].index);
     }
   }
 };
 export default {
-    // namespaced: true,
-    state,
-    actions,
-    mutations
-  }
+  state,
+  actions,
+  mutations
+};
 
+
+```
+
+###### 4.4 封装表格table.vue
+
+```
+<template>
+  <div>
+    <el-table :data="tableData" boder :fit="true" :stripe="true" :highlight-current-row="true" border>
+      <el-table-column type="index" width="80" v-if="indexNum" label="序号" header-align="center" align="center">
+      </el-table-column>
+       <el-table-column type="selection" width="55" v-if="checkbox"></el-table-column>
+      <el-table-column v-for="item in columns" :prop="item.key" :key="item.key" :label="item.title" :width="item.showFlag.width" :show-overflow-tooltip="true" header-align="center" :align="item.showFlag.align" >
+        <template slot-scope="scope">
+          <el-link  v-if="item.showFlag.operate" @click="Handle(scope.row)" type="primary">{{scope.row[item.data]}}</el-link>
+          <span v-else>{{scope.row[item.data]}}</span>
+        </template>
+      </el-table-column>
+    </el-table>
+  </div>
+</template>
+<script>
+export default {
+  props: {
+    //表格数据
+    tableData: {
+      type: Array,
+      default(){
+        return [];
+      }
+    },
+    //表格列.colums里面的属性 title: "列名",data: "属性名",
+    //showFlag: {  align: "文字对齐方式", width: "列宽度",operate:"是否可点击操作"}
+    columns: {
+      type: Array,
+      default(){
+        return [];
+      }
+    },
+    //是否需要多选框
+     checkbox: {
+      type: Boolean,
+      default(){
+        return true;
+      }
+    },
+    //是否需要序号
+    indexNum: {
+      type: Boolean,
+      default(){
+        return true;
+      }
+    },
+  },
+  methods: {
+    Handle(row) {
+      this.$emit("Handle", row);
+    }
+  }
+};
+</script>
+```
+
+页面引入。**tableData为表格数据，columns为列的对应属性，其中title为列名，data为该列对应属性名称，showFlag中align为文字对齐方式，width为列宽度，operate代表此列是否可操作**
+
+```
+    <table-com :tableData="tableData" :columns="columns":checkbox="true":indexNum="false" @Handle="handle"></table-com>
+/////////////////////////
+  tableData:[
+        {
+          name:"周涛",
+          phone:"123455643322",
+          gskm:"科目二",
+          status:"请假",
+          operate:"删除",
+        }
+      ],
+   columns: [
+        {
+          title: "姓名",
+          data: "name",
+          showFlag: {  align: "center", width: ""}
+        },
+        {
+          title: "手机号",
+          data: "phone",
+          showFlag: {  align: "center", width: "" }
+        },
+        {
+          title: "归属科目",
+          data: "gskm",
+          showFlag: {  align: "center", width: "" }
+        },
+        {
+          title: "状态",
+          data: "status",
+          showFlag: { align: "center", width: "" }
+        },
+         {
+          title: "操作",
+          data: "operate",
+          showFlag: {  align: "center", width: "",operate: true,}
+        },
+      ],
 ```
 
 
@@ -524,5 +699,122 @@ index.js统一管理。main.js只需引入**require('./mock/index.js')**
 require('@/mock/login')
 require('@/mock/menu')
 const Mock = require("mockjs")
+```
+
+# 6.后台搭建
+
+6.1 下载wampServer
+
+6.2 建立数据库driver,登录表login，字段id,username,password
+
+6.4 npm下载mysql和body-parser
+
+6.3 根目录下创建目录server进行数据库操作，server目录下四个文件，分别为app.js入口文件，db.js链接数据库，router.js路由文件，services.js处理业务逻辑
+
+![1579421943108](C:\Users\foresee\AppData\Roaming\Typora\typora-user-images\1579421943108.png)
+
+app.js
+
+```
+// 创建express服务器
+const express = require('express')
+const app = express()
+// 注册解析 表单数据的 body-parser
+const bodyParser = require('body-parser')
+// 将请求响应设置content-type设置为application/json
+const router = require('./router.js')
+app.use('/api/*', function (req, res, next) {
+	// 设置请求头为允许跨域
+    res.header("Access-Control-Allow-Origin", "*");
+    // 设置服务器支持的所有头信息字段
+    res.header("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With");
+    // 设置服务器支持的所有跨域请求的方法
+    res.header("Access-Control-Allow-Methods", "POST,GET");
+    // next()方法表示进入下一个路由
+    next();
+});
+// post
+app.use(bodyParser.urlencoded({extended:false}))
+// 处理json格式的参数
+app.use(bodyParser.json())
+// 配置路由
+app.use(router)
+// 服务器已经启动
+app.listen('4000',function(){
+    console.log('running...')
+})
+
+```
+
+db.js
+
+```
+let mysql = require('mysql')
+exports.base = (sql,data,callback)=>{
+	let connection = mysql.createConnection({
+	host     : 'localhost',
+  	user     : 'root',
+  	password : '',
+  	database : 'mytest'
+	})
+	connection.connect();
+	connection.query(sql,data, function (error, results, fields) {
+  	if (error) throw error;
+  		callback && callback(results)
+	})
+	connection.end();
+}
+```
+
+router.js
+
+```
+const express = require('express')
+const router = express.Router()
+const services = require('./services.js')
+// router.get('/',services.start)
+// 登录功能
+router.post('/api/login',services.login)
+
+// 注册功能
+router.post('/api/register',services.register)
+module.exports = router
+
+```
+
+services.js
+
+```
+const db = require('./db.js')
+exports.start = (req,res)=>{
+}
+// 登录注册处理
+exports.login = (req,res)=>{
+    let username = req.body.username
+    let pwd = req.body.password
+    // 查询语句
+    let sql = 'select * from login where username = ?'
+    db.base(sql,username,(result)=>{
+        if(!result.length){
+            return res.json({ status: 0, msg: '登录失败',username:username })
+        }else{
+            if(result[0].password==pwd){
+                return res.json({ status: 1, msg: '登录成功',username:username,password:pwd })
+            }
+            return res.json({ status: 0, msg: '密码错误',username:username })
+        }
+    })
+}
+exports.register = (req,res)=>{
+    console.log(req.body)
+    res.send('测试')
+}
+```
+
+6.4 启动
+
+```
+PS C:\Users\foresee\Desktop\demo>$ npm run dev
+PS C:\Users\foresee\Desktop\demo\server> node app
 ```
 
