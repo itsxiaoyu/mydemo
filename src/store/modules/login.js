@@ -38,7 +38,11 @@ const actions = {
           ses.setItem("password", res.password);
           console.log(ses, "ses");
           // state.title = ses.username;
-          router.push("/index");
+          if(res.username==="user"){
+            router.push("/user/index")
+          }else{
+            router.push("/admin/index");
+          }
         }else{
           alert("密码错误！");
         }

@@ -9,45 +9,51 @@ export default new Router({
     { path: '/login', component:()=>import('@/pages/login')},
     { 
       path: '/user',
-      component:()=>import('@/pages/user'),
+      component:()=>import('@/pages/user/user'),
       meta:{needLogin:true},
       children:[
+         {
+          path:'/user/index',
+          name:'user/index',
+          component:()=>import('@/pages/user/index'),
+          meta:{needLogin:true,title:'首页'},
+        },
         {
-          path:'/menu1',
-          component:()=>import('@/pages/menu1'),
-          meta:{needLogin:true},
+          path:'/user/menu1',
+          name:'user/menu1',
+          component:()=>import('@/pages/user/menu1'),
+          meta:{needLogin:true,title:'菜单1'},
         },
         {
-          path:'/menu2',
-          component:()=>import('@/pages/menu2'),
-          meta:{needLogin:true},
+          path:'/user/menu2',
+          name:'user/menu2',
+          component:()=>import('@/pages/user/menu2'),
+          meta:{needLogin:true,title:'菜单2'},
         },
       ]
     },
     { 
       path: '/admin',
-      component:()=>import('@/pages/admin'),
+      component:()=>import('@/pages/admin/admin'),
       meta:{needLogin:true},
       children:[
         {
-          path:'/index',
-          name:'index',
-          component:()=>import('@/pages/index'),
+          path:'/admin/index',
+          name:'admin/index',
+          component:()=>import('@/pages/admin/index'),
           meta:{needLogin:true,title:'首页'},
         },
         {
-          path:'/menu3',
-          name:'menu3',
-          component:()=>import('@/pages/menu3'),
+          path:'/admin/menu3',
+          name:'admin/menu3',
+          component:()=>import('@/pages/admin/menu3'),
           meta:{needLogin:true,title:'教练列表'},
-
         },
         {
-          path:'/menu4',
-          name:'menu4',
-          component:()=>import('@/pages/menu4'),
+          path:'/admin/menu4',
+          name:'admin/menu4',
+          component:()=>import('@/pages/admin/menu4'),
           meta:{needLogin:true,title:'请假记录'},
-
         },
       ]
     },

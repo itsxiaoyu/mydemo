@@ -59,7 +59,8 @@ export default {
       this.$emit("view", row);
     },
      deleteRow(index, rows) {
-        rows.splice(index, 1);
+        rows.splice(index+1, 1);
+        this.$emit("deleteRow",rows[index])
       },
   }
 };

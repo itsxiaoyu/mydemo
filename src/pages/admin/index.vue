@@ -6,7 +6,7 @@
           <div slot="header" class="clearfix">
             <span>教练总数</span>
           </div>
-          <div><h1>20</h1></div>
+          <div><h1>{{teacherNum}}</h1></div>
         </el-card>
       </el-col>
        <el-col :span="6">
@@ -14,7 +14,7 @@
           <div slot="header" class="clearfix">
             <span>学员总数</span>
           </div>
-          <div><h1>29</h1></div>
+          <div><h1>{{studentNum}}</h1></div>
         </el-card>
       </el-col>
        <el-col :span="6">
@@ -38,12 +38,22 @@
 </template>
 
 <script>
+import {getTeacher,getMyStudent} from '@/request/api.js'
 export default {
   name: "Index",
   data() {
-    return {};
+    return {
+      teacherNum:'',
+      studentNum:''
+    };
   },
   created() {
+    getTeacher({name:'',phone:'',gskm:''}).then(res=>{
+      this.teacherNum=res.result.length
+    }),
+    getMyStudent({id:''}).then(res=>{
+      this.studentNum=res.result.length
+    })
   },
   methods: {}
 };
