@@ -32,11 +32,31 @@ export function getDeleteTeacher({...param}){
 export function getUpdateTeacher({...param}){
 	return postAwait(BASE_URL+'/api/updateTeacher',{...param})
 }
-//学生信息
+//当前教练的学生信息
 export function getMyStudent({...param}){
 	return postAwait(BASE_URL+'/api/myStudent',{...param})
 }
 //课程安排
 export function getMyCourse({...param}){
 	return postAwait(BASE_URL+'/api/myCourse',{...param})
+}
+//所有学生信息
+export function getStudent({...param}){
+	return postAwait(BASE_URL+'/api/student',{...param})
+}
+//添加学员信息
+export function getAddStudent({...param}){
+	return postAwait(BASE_URL+'/api/addStudent',{...param})
+}
+//删除学员信息
+export function getDeleteStudent({...param}){
+	return postAwait(BASE_URL+'/api/deleteStudent',{...param})
+}
+//更新学员信息
+export function getUpdateStudent({...param}){
+	return postAwait(BASE_URL+'/api/updateStudent',{...param})
+}
+//
+export function getMyAppointment({...param}){
+	return postAwait(BASE_URL+'/api/myAppointment',{...param})
 }

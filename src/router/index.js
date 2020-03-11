@@ -53,7 +53,7 @@ export default new Router({
           path:'/admin/menu4',
           name:'admin/menu4',
           component:()=>import('@/pages/admin/menu4'),
-          meta:{needLogin:true,title:'请假记录'},
+          meta:{needLogin:true,title:'学员列表'},
         },
       ]
     },

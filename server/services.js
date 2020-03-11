@@ -62,7 +62,8 @@ exports.addTeacher = (req, res) => {
         if (result.length > 0) {
             return res.json({ status: 0, msg: '该用户已注册' })
         } else {
-            gskm==="2"?gskm="科目二":gskm="科目三"
+            // gskm==="2"?gskm="科目二":gskm="科目三"
+            // status==="1"?status="正常":status="请假"
             db.base(sql, [name, phone, gskm, status, sfz], (result) => {
                 return res.json({ status: 1, msg: '添加成功', result })
             })
@@ -85,8 +86,10 @@ exports.updateTeacher = (req,res)=>{
     let sfz=req.body.sfz
     let gskm=req.body.gskm
     let status=req.body.status
-    let sql = 'update teacher set tname=?,tphone=?,tsfz=?,tgskm=?,tstatus=? where tid=?'
-    db.base(sql,[name,phone,sfz,gskm,status,id],(result)=>{
+    let qjsj=req.body.qjsj
+    let qjyy=req.body.qjyy
+    let sql = 'update teacher set tname=?,tphone=?,tsfz=?,tgskm=?,tstatus=?,tqjsj=?,tqjyy=? where tid=?'
+    db.base(sql,[name,phone,sfz,gskm,status,qjsj,qjyy,id],(result)=>{
         return res.json({ status: 1, msg: '更新',result})
     })
 }
@@ -113,5 +116,73 @@ exports.myCourse=(req,res)=>{
    let sql='SELECT * FROM student WHERE sid IN(SELECT sid FROM sc WHERE tid=? AND time=?)'
     db.base(sql,[id,time],(result)=>{
         return res.json({ status: 1, msg: '查询同一教练同一时间的所有学生 ',result})
+    })
+}
+//获取学生信息
+exports.student = (req,res)=>{
+    let sql="select * from student where 1=1";
+    let arr = [];
+    let phone=req.body.phone
+    if(phone!=""){
+        phone = "%"+phone+"%";
+        sql += " and sphone like ?";
+        arr.push(phone);
+    }
+    db.base(sql,arr,(result)=>{
+        return res.json({ status: 1, msg: 'this is学生信息',result})
+    })
+}
+//删除学生信息
+exports.deleteStudent = (req, res) => {
+    let id = req.body.id
+    let sql = 'DELETE FROM student WHERE sid=?'
+    db.base(sql, id, (result) => {
+        return res.json({ status: 1, msg: '删除成功呢' })
+    })
+}
+//插入学生信息
+exports.addStudent = (req, res) => {
+    let name = req.body.name
+    let phone = req.body.phone
+    let tid = req.body.tid
+    let bmsj = req.body.bmsj
+    let tc = req.body.tc
+    let xf = req.body.xf
+    let jd = req.body.jd
+    let sfz = req.body.sfz
+    let querysql = "SELECT * FROM student WHERE sname=?";
+    let sql = 'INSERT INTO student(sname,sphone,tid,sbmsj,stc,sxf,sjd,sfz) VALUES(?,?,?,?,?,?,?,?)'
+    db.base(querysql, name, (result) => {
+        if (result.length > 0) {
+            return res.json({ status: 0, msg: '该用户已注册' })
+        } else {
+            db.base(sql, [name, phone, tid, bmsj, tc,xf,jd,sfz], (result) => {
+                return res.json({ status: 1, msg: '添加成功', result })
+            })
+        }
+    })
+}
+//更新此学生信息
+exports.updateStudent = (req,res)=>{
+    let id=req.body.id
+    let name=req.body.name
+    let phone=req.body.phone
+    let bmsj=req.body.bmsj
+    let tc=req.body.tc
+    let xf=req.body.xf
+    let jd=req.body.jd
+    let sfz=req.body.sfz
+    let sql = 'UPDATE student SET sname=?,sphone=?,sbmsj=?,stc=?,sxf=?,sjd=?,sfz=? WHERE sid=?'
+    db.base(sql,[name,phone,bmsj,tc,xf,jd,sfz,id],(result)=>{
+        return res.json({ status: 1, msg: '更新',result})
+    })
+}
+//查找此学生的预约记录
+exports.myAppointment=(req,res)=>{
+    let id=req.body.id
+    //查找1号教练的同一时间有几个预约学生
+   let sql='SELECT sc.time,teacher.tname,teacher.tphone FROM sc,teacher WHERE sid=?'
+    db.base(sql,id,(result)=>{
+        return res.json({ status: 1, msg: '查询学生 ',result})
     })
 }

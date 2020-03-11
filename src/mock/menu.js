@@ -9,12 +9,12 @@ Mock.mock('/getMenu1','get',{
       icon: "el-icon-s-home"
     },
     {
-      name: "教练",
+      name: "人员信息",
       haschild: true,
       icon: "el-icon-s-custom",
       children: [
         { name: "教练列表", haschild: false, index: "/admin/menu3" },
-        { name: "请假记录", haschild: false, index: "/admin/menu4" }
+        { name: "学员列表", haschild: false, index: "/admin/menu4" }
       ]
     },
   ]

@@ -20,12 +20,26 @@ router.post('/api/deleteTeacher',services.deleteTeacher)
 //更新教练列表
 router.post('/api/updateTeacher',services.updateTeacher)
 
-//学生列表
+//当前教练的学生列表
 router.post('/api/myStudent',services.myStudent)
 
 //课程安排
 router.post('/api/myCourse',services.myCourse)
 
+//所有学员信息
+router.post('/api/student',services.student)
+
+//添加学员
+router.post('/api/addStudent',services.addStudent)
+
+//删除学员信息
+router.post('/api/deleteStudent',services.deleteStudent)
+
+//更新学员信息
+router.post('/api/updateStudent',services.updateStudent)
+
+//
+router.post('/api/myAppointment',services.myAppointment)
 
 module.exports = router
 

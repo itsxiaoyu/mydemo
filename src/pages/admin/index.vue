@@ -20,7 +20,7 @@
        <el-col :span="6">
         <el-card shadow="hover">
           <div slot="header" class="clearfix">
-            <span>科目二约车</span>
+            <span>未交费人数</span>
           </div>
           <div><h1>34</h1></div>
         </el-card>
@@ -28,11 +28,14 @@
        <el-col :span="6">
         <el-card shadow="hover">
           <div slot="header" class="clearfix">
-            <span>科目三约车</span>
+            <span>拿证人数</span>
           </div>
           <div><h1>45</h1></div>
         </el-card>
       </el-col>
+    </el-row>
+    <el-row>
+      拿证人数echart
     </el-row>
   </div>
 </template>

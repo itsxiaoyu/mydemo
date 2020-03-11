@@ -25,7 +25,7 @@
         </el-form>
       </el-col>
       <el-col :span="6" class="text-right">
-        <el-button type="primary" icon="el-icon-plus " @click="dialogFormVisible = true">添加教练</el-button>
+        <el-button type="primary" icon="el-icon-plus " @click="addOpen">添加教练</el-button>
       </el-col>
     </el-row>
     <!-- 添加教练弹出框 -->
@@ -41,18 +41,21 @@
           <el-input v-model="dialogForm.sfz" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="状态" :label-width="formLabelWidth" prop="status">
-          <el-input v-model="dialogForm.status" autocomplete="off"></el-input>
+           <el-select v-model="dialogForm.status" placeholder="请选择状态">
+              <el-option label="正常" value="正常"></el-option>
+              <el-option label="请假" value="请假"></el-option>
+            </el-select>
         </el-form-item>
         <el-form-item label="归属科目" :label-width="formLabelWidth" prop="gskm">
           <el-select v-model="dialogForm.gskm" placeholder="请选择活动区域">
-            <el-option label="科目二" value="2"></el-option>
-            <el-option label="科目三" value="3"></el-option>
+            <el-option label="科目二" value="科目二"></el-option>
+            <el-option label="科目三" value="科目三"></el-option>
           </el-select>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogSave('ruleForm')">确 定</el-button>
+        <el-button type="primary" @click="addSave('ruleForm')">确 定</el-button>
       </div>
     </el-dialog>
     <!-- 表格 -->
@@ -89,10 +92,34 @@
                 <el-input v-model="dialogForm.sfz"></el-input>
               </el-form-item>
               <el-form-item label="归属科目：">
-                <el-input v-model="dialogForm.gskm"></el-input>
+                 <el-select v-model="dialogForm.gskm" placeholder="请选择活动区域">
+                  <el-option label="科目二" value="科目二"></el-option>
+                  <el-option label="科目三" value="科目三"></el-option>
+                </el-select>
               </el-form-item>
               <el-form-item label="状态：">
-                <el-input v-model="dialogForm.status"></el-input>
+                <el-select v-model="dialogForm.status" placeholder="请选择状态">
+                  <el-option label="正常" value="正常"></el-option>
+                  <el-option label="请假" value="请假"></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item v-if="dialogForm.status==='请假'" label="请假时间：">
+                   <el-date-picker
+                    v-model="dialogForm.qjsj"
+                    type="daterange"
+                    value-format="yyyy-MM-dd"
+                    range-separator="至"
+                    start-placeholder="开始日期"
+                    end-placeholder="结束日期">
+                  </el-date-picker>
+              </el-form-item>
+              <el-form-item v-if="dialogForm.status==='请假'" label="请假原因：">
+                <el-input
+                  type="textarea"
+                  :rows="2"
+                  placeholder="请输入内容"
+                  v-model="dialogForm.qjyy">
+                </el-input>
               </el-form-item>
               <el-form-item>
                 <el-button type="primary" @click="edit">编辑</el-button>
@@ -137,7 +164,6 @@
               ></table-com>
             </div>
           </el-tab-pane>
-          <el-tab-pane label="教练日志" name="fourth">资金记录</el-tab-pane>
         </el-tabs>
       </div>
     </el-drawer>
@@ -155,8 +181,8 @@ export default {
   data() {
     return {
       options: [
-        { label: "科目二", value: "2" },
-        { label: "科目三", value: "3" }
+        { label: "科目二", value: "科目二" },
+        { label: "科目三", value: "科目三" }
       ],
       tableData: null,
       columns: [
@@ -215,7 +241,9 @@ export default {
         phone: "",
         sfz: "",
         gskm: "",
-        status: ""
+        status: "",
+        qjsj:'',
+        qjyy:''
       },
       formLabelWidth: "120px",
       rules: {
@@ -223,7 +251,7 @@ export default {
           { required: true, message: "请输入名称", trigger: "blur" },
           { min: 1, max: 5, message: "长度在 1 到 5 个字符", trigger: "blur" }
         ],
-        gskm: [{ required: true, message: "请选择科目", trigger: "change" }]
+        gskm: [{ required: true, message: "请选择科目", trigger: "blur" }]
       },
       courseData:null,
       courseColumns:[
@@ -238,7 +266,7 @@ export default {
           showFlag:{align:"center",width:""}
         },
       ],
-      timeValue:''
+      timeValue:'',
     };
   },
   created() {
@@ -260,8 +288,14 @@ export default {
       this.dialogForm.sfz=row.tsfz
       this.dialogForm.gskm=row.tgskm
       this.dialogForm.status=row.tstatus
+      if(row.tqjsj===null||row.tqjyy===null){
+        this.dialogForm.qjsj=""
+        this.dialogForm.qjyy=""
+      }else{
+        this.dialogForm.qjsj=row.tqjsj.split('至')
+        this.dialogForm.qjyy=row.tqjyy
+      }
       getMyStudent({id:row.tid}).then(res=>{
-        console.log(res)
         this.studentData=res.result
       })
         //当天的教学安排
@@ -274,6 +308,7 @@ export default {
       this.courseData=res.result
       })
     },
+    //搜索时间内练车学员
     handle(){
        getMyCourse({id:this.dialogForm.id,time:this.timeValue}).then(res=>{
         console.log(res,'this is course table')
@@ -289,13 +324,16 @@ export default {
       });
     },
     edit(){
+      var sj=this.dialogForm.qjsj[0]+'至'+this.dialogForm.qjsj[1]
       getUpdateTeacher({
         id:this.dialogForm.id,
         name:this.dialogForm.name,
         phone:this.dialogForm.phone,
         sfz:this.dialogForm.sfz,
         gskm:this.dialogForm.gskm,
-        status:this.dialogForm.status
+        status:this.dialogForm.status,
+        qjsj:sj,
+        qjyy:this.dialogForm.qjyy
       }).then(res=>{
         this.getData()
         this.drawer=false
@@ -314,10 +352,20 @@ export default {
           this.tableData=res.result
         })
       }
-     
+    },
+    addOpen(){
+      this.dialogFormVisible=true
+      this.dialogForm.id=""
+      this.dialogForm.name=""
+      this.dialogForm.phone=""
+      this.dialogForm.sfz=""
+      this.dialogForm.gskm=""
+      this.dialogForm.status=""
+      this.dialogForm.qjsj=""
+      this.dialogForm.qjyy=""
     },
     //添加
-    dialogSave(formName) {
+    addSave(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
           getAddTeacher({
@@ -332,6 +380,7 @@ export default {
               this.getData();
             } else {
               alert("该用户已注册");
+              this.dialogFormVisible = false;
             }
           });
           this.dialogFormVisible = false;
@@ -355,10 +404,11 @@ export default {
 }
 .title-style{
   font-weight: normal;
-  color:#333;
+  color:#909399;
   span{
     font-weight: bold;
     margin:0 5px;
+    color: #333;
   }
 }
 </style>
