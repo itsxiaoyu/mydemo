@@ -1,4 +1,5 @@
-import { getMenu1, getMenu2 } from "../../request/api.js";
+import { getMenu1, getMenu2 } from "../../request/api.js";
+
 
 const state = {
   //菜单
@@ -6,20 +7,21 @@ const state = {
   tabs: [],
   activeItem: "" // 默认选中首页
 };
-const mutations = {
-  initMenu(state, param) {
-    state.menu = param.menu;
-  },
-  initTabs(state, tabs) {
-    state.tabs = tabs;
-  },
-  addTab(state, tab) {
-    state.tabs.push(tab);
-  },
-  switchTab(state, nowIndex) {
-    state.activeItem = nowIndex;
-  }
+const mutations = {
+  initMenu(state, param) {
+    state.menu = param.menu;
+  },
+  initTabs(state, tabs) {
+    state.tabs = tabs;
+  },
+  addTab(state, tab) {
+    state.tabs.push(tab);
+  },
+  switchTab(state, nowIndex) {
+    state.activeItem = nowIndex;
+  }
 };
+
 const actions = {
   //获取菜单
   getMenu(context, { index: index ,path:path}) {

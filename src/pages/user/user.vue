@@ -9,6 +9,7 @@
           <keep-alive>
             <router-view></router-view>
           </keep-alive>
+          
         </div>
       </div>
     </el-container>
@@ -20,7 +21,6 @@ import headerBar from "@/components/layout/headerBar";
 import asideBar from "@/components/layout/asideBar";
 import tabs from "@/components/layout/tabs";
 import { mapState, mapActions } from 'vuex'
-
 export default {
   name: "User",
   components: {
@@ -62,7 +62,7 @@ export default {
     })
   },
   created() {
-    this.$store.dispatch('getMenu',{index:2,path:this.$route.path})
+    this.$store.dispatch('getMenu',{index:2})
     // if (sessionStorage.getItem("store")) {
     //   this.$store.replaceState(
     //     Object.assign(
@@ -84,3 +84,4 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 </style>
+© 2020 GitHub, Inc.

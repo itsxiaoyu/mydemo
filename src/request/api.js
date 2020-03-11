@@ -15,20 +15,28 @@ export  function getMenu1(param){
 export  function getMenu2(param){
 	return getAwait('/getMenu2',param)
 }
-//渲染教练列表
-export function getTeacher({...params}){
-	return postAwait(BASE_URL+'/api/teacher',{...params})
-}
 
-export function getaddteacher({...params}){
-	return postAwait(BASE_URL+'/api/addteacher',{...params})
+//教练信息
+export function getTeacher({...param}){
+	return postAwait(BASE_URL+'/api/teacher',{...param})
 }
-export function getupdateteacher({...params}){
-	return postAwait(BASE_URL+'/api/updateteacher',{...params})
+//添加教练信息
+export function getAddTeacher({...param}){
+	return postAwait(BASE_URL+'/api/addTeacher',{...param})
 }
-export function getMyStudent({...params}){
-	return postAwait(BASE_URL+'/api/myStudent',{...params})
+//删除教练
+export function getDeleteTeacher({...param}){
+	return postAwait(BASE_URL+'/api/deleteTeacher',{...param})
 }
-export function getMyCourse({...params}){
-	return postAwait(BASE_URL+'/api/MyCourse',{...params})
+//更新教练列表
+export function getUpdateTeacher({...param}){
+	return postAwait(BASE_URL+'/api/updateTeacher',{...param})
+}
+//学生信息
+export function getMyStudent({...param}){
+	return postAwait(BASE_URL+'/api/myStudent',{...param})
+}
+//课程安排
+export function getMyCourse({...param}){
+	return postAwait(BASE_URL+'/api/myCourse',{...param})
 }

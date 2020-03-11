@@ -4,7 +4,7 @@
       <el-col :span="6">
         <el-card shadow="hover">
           <div slot="header" class="clearfix">
-            <span>教练列表</span>
+            <span>教练总数</span>
           </div>
           <div><h1>{{teacherNum}}</h1></div>
         </el-card>
@@ -20,7 +20,7 @@
        <el-col :span="6">
         <el-card shadow="hover">
           <div slot="header" class="clearfix">
-            <span>未交学费</span>
+            <span>科目二约车</span>
           </div>
           <div><h1>34</h1></div>
         </el-card>
@@ -28,7 +28,7 @@
        <el-col :span="6">
         <el-card shadow="hover">
           <div slot="header" class="clearfix">
-            <span>已拿证</span>
+            <span>科目三约车</span>
           </div>
           <div><h1>45</h1></div>
         </el-card>
@@ -38,23 +38,19 @@
 </template>
 
 <script>
-import { getTeacher,getMyStudent} from "@/request/api.js";
+import {getTeacher,getMyStudent} from '@/request/api.js'
 export default {
   name: "Index",
   data() {
     return {
       teacherNum:'',
-      studentNum:'',
+      studentNum:''
     };
   },
   created() {
-    getTeacher({
-      name:'',
-      phone:'',
-      gskm:'',
-      }).then(res=>{
+    getTeacher({name:'',phone:'',gskm:''}).then(res=>{
       this.teacherNum=res.result.length
-    })
+    }),
     getMyStudent({id:''}).then(res=>{
       this.studentNum=res.result.length
     })

@@ -1,4 +1,3 @@
-
 import { getLogin} from "@/request/api.js";
 import router from "../../router/index";
 
@@ -37,10 +36,11 @@ const actions = {
           ses.setItem("username", res.username);
           ses.setItem("password", res.password);
           console.log(ses, "ses");
-          if(res.username==='admin'){
-            router.push("/admin/index");
-          }else{
+          // state.title = ses.username;
+          if(res.username==="user"){
             router.push("/user/index")
+          }else{
+            router.push("/admin/index");
           }
         }else{
           alert("密码错误！");

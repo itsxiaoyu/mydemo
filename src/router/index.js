@@ -12,7 +12,7 @@ export default new Router({
       component:()=>import('@/pages/user/user'),
       meta:{needLogin:true},
       children:[
-        {
+         {
           path:'/user/index',
           name:'user/index',
           component:()=>import('@/pages/user/index'),
@@ -48,7 +48,6 @@ export default new Router({
           name:'admin/menu3',
           component:()=>import('@/pages/admin/menu3'),
           meta:{needLogin:true,title:'教练列表'},
-
         },
         {
           path:'/admin/menu4',
