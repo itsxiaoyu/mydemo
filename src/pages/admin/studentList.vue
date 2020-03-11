@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="width:99%">
     <el-row>
       <el-col :span="18">
         <el-form :inline="true" class="demo-form-inline">
@@ -70,7 +70,7 @@
     >
       <div class="drawer-content">
         <el-tabs v-model="activeName">
-          <el-tab-pane label="教练信息：" name="first">
+          <el-tab-pane label="学员信息" name="first">
             <el-form ref="form" :model="dialogForm" label-width="100px">
               <el-form-item label="姓名：">
                 <el-input v-model="dialogForm.name"></el-input>
@@ -205,11 +205,6 @@ export default {
       courseData: null,
       courseColumns: [
         {
-          title: "手机号",
-          data: "sphone",
-          showFlag: { align: "center", width: "" }
-        },
-        {
           title: "预约时间",
           data: "time",
           showFlag: { align: "center", width: "" }
@@ -260,7 +255,7 @@ export default {
       this.dialogForm.xf = row.sxf;
       this.dialogForm.jd = row.sjd;
       getMyAppointment({id:this.dialogForm.id}).then(res=>{
-        console.log(res)
+        this.courseData=res.result
       })
     },
     deleteRow(row) {
@@ -333,5 +328,14 @@ export default {
 <style scoped lang="scss">
 .drawer-content {
   padding: 20px;
+}
+.title-style{
+  font-weight: normal;
+  color:#909399;
+  span{
+    font-weight: bold;
+    margin:0 5px;
+    color: #333;
+  }
 }
 </style>

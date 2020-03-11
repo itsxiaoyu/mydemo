@@ -13,9 +13,23 @@ Mock.mock('/getMenu1','get',{
       haschild: true,
       icon: "el-icon-s-custom",
       children: [
-        { name: "教练列表", haschild: false, index: "/admin/menu3" },
-        { name: "学员列表", haschild: false, index: "/admin/menu4" }
+        { name: "教练列表", haschild: false, index: "/admin/teacherList" },
+        { name: "学员列表", haschild: false, index: "/admin/studentList" }
       ]
+    },
+    {
+      name: "评论汇总",
+      haschild: false,
+      index: "/admin/comment",
+      children: [],
+      icon: "el-icon-s-comment"
+    },
+    {
+      name: "发布公告",
+      haschild: true,
+      index: "/admin/release",
+      children: [],
+      icon: "el-icon-s-promotion"
     },
   ]
 });

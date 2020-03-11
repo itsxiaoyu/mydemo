@@ -180,9 +180,8 @@ exports.updateStudent = (req,res)=>{
 //查找此学生的预约记录
 exports.myAppointment=(req,res)=>{
     let id=req.body.id
-    //查找1号教练的同一时间有几个预约学生
-   let sql='SELECT sc.time,teacher.tname,teacher.tphone FROM sc,teacher WHERE sid=?'
-    db.base(sql,id,(result)=>{
+   let sql='SELECT sc.time,teacher.tname,teacher.tphone FROM sc,teacher WHERE sc.sid=? AND teacher.tid=sc.tid'
+   db.base(sql,id,(result)=>{
         return res.json({ status: 1, msg: '查询学生 ',result})
     })
 }
