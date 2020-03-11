@@ -2,8 +2,8 @@
   <div>
     <el-tabs :value="activeItem" type="card" @tab-remove="removeTab" @tab-click="tabClick">
       <el-tab-pane
-        v-for="item in tabs"
-        :key="item.index"
+        v-for="(item,i) in tabs"
+        :key="i"
         :label="item.label"
         :name="item.index"
         :closable="item.closable"

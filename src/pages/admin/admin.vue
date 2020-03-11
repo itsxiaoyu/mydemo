@@ -41,7 +41,7 @@ export default {
     })
   },
   created() {
-    this.$store.dispatch('getMenu',{index:1})
+    this.$store.dispatch('getMenu',{index:1,path:this.$route.path})
   },
   methods: {
   

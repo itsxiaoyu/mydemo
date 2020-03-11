@@ -4,17 +4,17 @@ Mock.mock('/getMenu1','get',{
     {
       name: "首页",
       haschild: false,
-      index: "/index",
+      index: "/admin/index",
       children: [],
       icon: "el-icon-s-home"
     },
     {
-      name: "教练",
+      name: "人员信息",
       haschild: true,
       icon: "el-icon-s-custom",
       children: [
-        { name: "教练列表", haschild: false, index: "/menu3" },
-        { name: "请假记录", haschild: false, index: "/menu4" }
+        { name: "教练列表", haschild: false, index: "/admin/menu3" },
+        { name: "学员列表", haschild: false, index: "/admin/menu4" }
       ]
     },
   ]
@@ -25,7 +25,7 @@ Mock.mock(
     {
       name: "首页",
       haschild: false,
-      index: "/index",
+      index: "/user/index",
       children: [],
       icon: "el-icon-s-home"
     },
@@ -34,8 +34,8 @@ Mock.mock(
     haschild: true,
     icon: "el-icon-s-fold",
     children: [
-      { name: "子菜单1-1", haschild: false, index: "/menu1" },
-      { name: "子菜单1-2", haschild: false, index: "/menu2" }
+      { name: "子菜单1-1", haschild: false, index: "/user/menu1" },
+      { name: "子菜单1-2", haschild: false, index: "/user/menu2" }
     ]
   },
   ]}

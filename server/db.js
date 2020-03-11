@@ -4,7 +4,7 @@ exports.base = (sql,data,callback)=>{
 	host     : 'localhost',
   	user     : 'root',
   	password : '',
-  	database : 'mytest'
+  	database : 'driver'
 	})
 	connection.connect();
 	connection.query(sql,data, function (error, results, fields) {

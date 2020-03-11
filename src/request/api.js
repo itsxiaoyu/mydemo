@@ -15,3 +15,20 @@ export  function getMenu1(param){
 export  function getMenu2(param){
 	return getAwait('/getMenu2',param)
 }
+//渲染教练列表
+export function getTeacher({...params}){
+	return postAwait(BASE_URL+'/api/teacher',{...params})
+}
+
+export function getaddteacher({...params}){
+	return postAwait(BASE_URL+'/api/addteacher',{...params})
+}
+export function getupdateteacher({...params}){
+	return postAwait(BASE_URL+'/api/updateteacher',{...params})
+}
+export function getMyStudent({...params}){
+	return postAwait(BASE_URL+'/api/myStudent',{...params})
+}
+export function getMyCourse({...params}){
+	return postAwait(BASE_URL+'/api/MyCourse',{...params})
+}

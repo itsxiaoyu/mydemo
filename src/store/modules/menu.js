@@ -3,13 +3,8 @@ import { getMenu1, getMenu2 } from "../../request/api.js";
 const state = {
   //菜单
   menu: [],
-  tabs: [
-    {
-      label: "首页",
-      index: "/index"
-    }
-  ],
-  activeItem: "/index" // 默认选中首页
+  tabs: [],
+  activeItem: "" // 默认选中首页
 };
 const mutations = {
   initMenu(state, param) {
@@ -27,22 +22,31 @@ const mutations = {
 };
 const actions = {
   //获取菜单
-  getMenu(context, { index: index }) {
+  getMenu(context, { index: index ,path:path}) {
+    context.state.tabs=[]
     if (index === 1) {
       getMenu1().then(res => {
         let menumap = res.data;
+        if(path==='/admin/index'){
+          context.commit("switchTab",path)
+        }
+        context.state.tabs.unshift({label:'首页',index:'/admin/index',closable:false})
         context.commit("initMenu", { menu: menumap });
       });
     } else {
       getMenu2().then(res => {
         let menumap = res.data;
+        if(path==='/user/index'){
+          context.commit("switchTab",path)
+        }
+        context.state.tabs.unshift({label:'首页',index:'/user/index',closable:false})
         context.commit("initMenu", { menu: menumap });
       });
     }
   },
   //获取tab
   getTab(context, { index: index, title: title }) {
-    if (index !== "/index") {
+    if (index !== "/admin/index" && index!=="/user/index") {
       context.state.activeItem = index;
       context.commit("switchTab", index);
       context.commit("addTab", { index: index, label: title, closable: true });
@@ -52,7 +56,7 @@ const actions = {
   },
   //点击菜单
   clickMenuItem(context, { index: index }) {
-    if (index !== "/index") {
+    if (index !== "/admin/index"&&index!=="/user/index") {
       var tab = context.state.tabs.find(f => f.index === index);
       if (!tab) {
         let menu = {};
@@ -76,10 +80,14 @@ const actions = {
     let newTabs = context.state.tabs.filter(f => f.index !== index);
     context.commit("initTabs", newTabs);
     let activeItem = newTabs[indexNum - 1].index;
-    if (activeItem === "/index") {
-      context.commit("switchTab", "/index");
+    if (activeItem === "/admin/index") {
+      context.commit("switchTab", activeItem);
     } else {
-      context.commit("switchTab", newTabs[indexNum - 1].index);
+      if(activeItem==="/user/index"){
+      context.commit("switchTab", activeItem);
+      }else{
+        context.commit("switchTab", newTabs[indexNum - 1].index);
+      }
     }
   }
 };

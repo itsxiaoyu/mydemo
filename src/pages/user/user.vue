@@ -4,8 +4,12 @@
     <el-container>
       <aside-bar :menuList="menu2"></aside-bar>
       <div style="display:inline-block;height:600px;width:100%;">
-        <tabs></tabs>用户界面
-        <router-view></router-view>
+        <tabs></tabs>
+        <div style="padding:20px;">
+          <keep-alive>
+            <router-view></router-view>
+          </keep-alive>
+        </div>
       </div>
     </el-container>
   </div>
@@ -58,7 +62,7 @@ export default {
     })
   },
   created() {
-    this.$store.dispatch('getMenu',{index:2})
+    this.$store.dispatch('getMenu',{index:2,path:this.$route.path})
     // if (sessionStorage.getItem("store")) {
     //   this.$store.replaceState(
     //     Object.assign(
