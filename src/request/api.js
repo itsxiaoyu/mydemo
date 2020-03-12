@@ -56,7 +56,11 @@ export function getDeleteStudent({...param}){
 export function getUpdateStudent({...param}){
 	return postAwait(BASE_URL+'/api/updateStudent',{...param})
 }
-//
+//查看此学员预约
 export function getMyAppointment({...param}){
 	return postAwait(BASE_URL+'/api/myAppointment',{...param})
+}
+//查看所有评价
+export function getComment({...param}){
+	return postAwait(BASE_URL+'/api/comment',{...param})
 }

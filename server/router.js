@@ -38,8 +38,11 @@ router.post('/api/deleteStudent',services.deleteStudent)
 //更新学员信息
 router.post('/api/updateStudent',services.updateStudent)
 
-//
+//查看此学员预约
 router.post('/api/myAppointment',services.myAppointment)
+
+//查看所有评价
+router.post('/api/comment',services.comment)
 
 module.exports = router
 

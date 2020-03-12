@@ -5,3 +5,12 @@
 .text-right{
     text-align: right;
 }
+//分页器
+.pagination-style{
+    .el-pagination{
+        text-align: right;
+    }
+}
+.el-rate+span{
+    display: none;
+}

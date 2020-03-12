@@ -26,7 +26,7 @@ Mock.mock('/getMenu1','get',{
     },
     {
       name: "发布公告",
-      haschild: true,
+      haschild: false,
       index: "/admin/release",
       children: [],
       icon: "el-icon-s-promotion"

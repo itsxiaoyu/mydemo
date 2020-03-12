@@ -1,11 +1,12 @@
 <template>
   <div>
-    <el-table :data="tableData" boder :fit="true" :stripe="true" :highlight-current-row="true" border>
+    <el-table :data="tableData" boder :fit="true" :stripe="true" :highlight-current-row="true" border height="285px">
       <el-table-column type="index" width="80" v-if="indexNum" label="序号" header-align="center" align="center">
       </el-table-column>
        <el-table-column type="selection" width="55" v-if="checkbox"></el-table-column>
       <el-table-column v-for="item in columns" :prop="item.key" :key="item.key" :label="item.title" :width="item.showFlag.width" :show-overflow-tooltip="true" header-align="center" :align="item.showFlag.align" >
         <template slot-scope="scope">
+          <el-rate  v-if="item.showFlag.rate" v-model="scope.row[item.data]"  disabled></el-rate>
           <el-link  v-if="item.showFlag.delete" @click.native.prevent="deleteRow(scope.$index, tableData)" type="primary">删除</el-link>
           <el-link  v-if="item.showFlag.view" @click="view(scope.row)" type="primary">查看</el-link>
           <span v-else>{{scope.row[item.data]}}</span>

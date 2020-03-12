@@ -185,3 +185,17 @@ exports.myAppointment=(req,res)=>{
         return res.json({ status: 1, msg: '查询学生 ',result})
     })
 }
+//查找全部评价内容
+exports.comment = (req,res)=>{
+    let name=req.body.name
+    let sql="SELECT student.sname,teacher.tname,comment.pjxj,comment.pjnr,comment.pjsj FROM student,teacher,comment WHERE comment.sid=student.sid AND comment.tid=teacher.tid";
+    let arr = [];
+    if(name!=""){
+        sql += " AND comment.tid IN(SELECT tid FROM teacher WHERE tname=?)";
+        arr.push(name);
+    }
+    console.log(arr,sql)
+    db.base(sql,arr,(result)=>{
+        return res.json({ status: 1, msg: 'this is评论信息',result})
+    })
+}

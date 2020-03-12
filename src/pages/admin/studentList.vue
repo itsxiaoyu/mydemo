@@ -51,13 +51,24 @@
     <!-- 表格 -->
     <div class="table-box">
       <table-com
-        :tableData="tableData"
+        :tableData="showData"
         :columns="columns"
         :checkbox="false"
         :indexNum="true"
         @view="view"
         @deleteRow="deleteRow"
       ></table-com>
+    </div>
+     <div class="pagination-style">
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="1"
+        :page-sizes="[5, 10, 20, 30]"
+        :page-size="100"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total">
+      </el-pagination>
     </div>
     <!-- 查看 -->
     <el-drawer
@@ -219,7 +230,11 @@ export default {
           data: "tphone",
           showFlag: { align: "center", width: "" }
         }
-      ]
+      ],
+      total:0,
+      pageSize:5,
+      pageIndex:1,
+      showData:[]
     };
   },
   created() {
@@ -234,6 +249,7 @@ export default {
           phone: this.phone
         }).then(res => {
           this.tableData = res.result;
+          this.showData=this.tableData.slice((this.pageIndex-1)*this.pageSize,this.pageIndex*this.pageSize)
         });
       }
     },
@@ -241,6 +257,8 @@ export default {
     getData() {
       getStudent({ phone: "" }).then(res => {
         this.tableData = res.result;
+        this.total=res.result.length
+        this.showData=this.tableData.slice((this.pageIndex-1)*this.pageSize,this.pageIndex*this.pageSize)
       });
     },
     //查看
@@ -319,7 +337,16 @@ export default {
           return false;
         }
       });
-    }
+    },
+    handleSizeChange(val) {
+      this.pageSize=val
+        console.log(`每页 ${val} 条`);
+    },
+    handleCurrentChange(val) {
+      this.pageIndex=val
+        console.log(`当前页: ${val}`);
+      this.showData=this.tableData.slice((val-1)*this.pageSize,val*this.pageSize)
+    },
   }
 };
 </script>
