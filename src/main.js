@@ -13,7 +13,11 @@ import store from './store/index'//引入store
 //解决菜单收缩文字不隐藏
 import Fragment from 'vue-fragment'
 Vue.use(Fragment.Plugin)
-
+//markdown
+import mavonEditor from 'mavon-editor'
+import 'mavon-editor/dist/css/index.css'
+Vue.use(mavonEditor)
+//
 Vue.config.productionTip = false
 require('./mock/index.js')
 

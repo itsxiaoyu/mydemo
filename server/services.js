@@ -22,7 +22,7 @@ exports.register = (req, res) => {
     console.log(req.body)
     res.send('测试')
 }
-
+///////////////////////////////////教练///////////////////////////////////////////////
 exports.teacher = (req,res)=>{
     let sql="select * from teacher where 1=1";
     let arr = [];
@@ -62,8 +62,6 @@ exports.addTeacher = (req, res) => {
         if (result.length > 0) {
             return res.json({ status: 0, msg: '该用户已注册' })
         } else {
-            // gskm==="2"?gskm="科目二":gskm="科目三"
-            // status==="1"?status="正常":status="请假"
             db.base(sql, [name, phone, gskm, status, sfz], (result) => {
                 return res.json({ status: 1, msg: '添加成功', result })
             })
@@ -118,6 +116,7 @@ exports.myCourse=(req,res)=>{
         return res.json({ status: 1, msg: '查询同一教练同一时间的所有学生 ',result})
     })
 }
+/////////////////////////////////学员/////////////////////////////////////////
 //获取学生信息
 exports.student = (req,res)=>{
     let sql="select * from student where 1=1";
@@ -185,6 +184,15 @@ exports.myAppointment=(req,res)=>{
         return res.json({ status: 1, msg: '查询学生 ',result})
     })
 }
+//查找未交费学生
+exports.notPaying=(req,res)=>{
+    let id='未交'
+   let sql='SELECT * FROM student WHERE sxf=?'
+   db.base(sql,id,(result)=>{
+        return res.json({ status: 1, msg: '查询未交费 ',result})
+    })
+}
+//////////////////////////评价///////////////////////////////////////
 //查找全部评价内容
 exports.comment = (req,res)=>{
     let name=req.body.name
@@ -197,5 +205,32 @@ exports.comment = (req,res)=>{
     console.log(arr,sql)
     db.base(sql,arr,(result)=>{
         return res.json({ status: 1, msg: 'this is评论信息',result})
+    })
+}
+///////////////////////////////发布/////////////////////////////////////////
+//查找所有发布内容
+exports.release=(req,res)=>{
+    // let id=req.body.id
+   let sql='SELECT * FROM `release` WHERE 1=1'
+   db.base(sql,null,(result)=>{
+        return res.json({ status: 1, msg: '所有公告 ',result})
+    })
+}
+exports.deleteRelease = (req, res) => {
+    let id = req.body.id
+    let sql = 'DELETE FROM `release` WHERE rid=?'
+    db.base(sql, id, (result) => {
+        return res.json({ status: 1, msg: '删除成功呢' })
+    })
+}
+//插入
+exports.addRelease = (req, res) => {
+    let title = req.body.title
+    let content = req.body.content
+    let people = req.body.people
+    let time = req.body.time
+    let sql = 'INSERT INTO `release`(rtitle,rcontent,rpeople,rtime) values(?,?,?,?)'
+    db.base(sql, [title, content, people, time], (result) => {
+        return res.json({ status: 1, msg: '添加内容成功', result })
     })
 }

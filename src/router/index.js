@@ -67,6 +67,18 @@ export default new Router({
           component:()=>import('@/pages/admin/release'),
           meta:{needLogin:true,title:'发布公告'},
         },
+        {
+          path:'/admin/addRelease',
+          name:'admin/addRelease',
+          component:()=>import('@/pages/admin/addRelease'),
+          meta:{needLogin:true,title:'新增公告'},
+        },
+        {
+          path:'/admin/viewRelease',
+          name:'admin/viewRelease',
+          component:()=>import('@/pages/admin/viewRelease'),
+          meta:{needLogin:true,title:'公告详情'},
+        },
       ]
     },
   ]

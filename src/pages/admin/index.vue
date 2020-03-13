@@ -22,7 +22,7 @@
           <div slot="header" class="clearfix">
             <span>未交费人数</span>
           </div>
-          <div><h1>34</h1></div>
+          <div><h1>{{notPaying}}</h1></div>
         </el-card>
       </el-col>
        <el-col :span="6">
@@ -41,13 +41,14 @@
 </template>
 
 <script>
-import {getTeacher,getMyStudent} from '@/request/api.js'
+import {getTeacher,getMyStudent,getNotPaying} from '@/request/api.js'
 export default {
   name: "Index",
   data() {
     return {
       teacherNum:'',
-      studentNum:''
+      studentNum:'',
+      notPaying:'',
     };
   },
   created() {
@@ -56,6 +57,9 @@ export default {
     }),
     getMyStudent({id:''}).then(res=>{
       this.studentNum=res.result.length
+    }),
+    getNotPaying().then(res=>{
+      this.notPaying=res.result.length
     })
   },
   methods: {}

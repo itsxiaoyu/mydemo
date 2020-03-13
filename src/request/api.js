@@ -60,7 +60,23 @@ export function getUpdateStudent({...param}){
 export function getMyAppointment({...param}){
 	return postAwait(BASE_URL+'/api/myAppointment',{...param})
 }
+//查看未交费学员
+export function getNotPaying({...param}){
+	return postAwait(BASE_URL+'/api/notPaying',{...param})
+}
 //查看所有评价
 export function getComment({...param}){
 	return postAwait(BASE_URL+'/api/comment',{...param})
+}
+//查看公告
+export function getRelease({...param}){
+	return postAwait(BASE_URL+'/api/release',{...param})
+}
+//删除公告
+export function getDeleteRelease({...param}){
+	return postAwait(BASE_URL+'/api/deleteRelease',{...param})
+}
+//添加公告
+export function getAddRelease({...param}){
+	return postAwait(BASE_URL+'/api/addRelease',{...param})
 }

@@ -26,10 +26,15 @@ Mock.mock('/getMenu1','get',{
     },
     {
       name: "发布公告",
-      haschild: false,
+      haschild: true,
       index: "/admin/release",
-      children: [],
-      icon: "el-icon-s-promotion"
+      icon: "el-icon-s-promotion",
+      children: [
+        { name: "历史公告", haschild: false, index: "/admin/release" },
+        { name: "新增公告", haschild: false, index: "/admin/addRelease" },
+        // { name: "公告详情", haschild: false, index: "/admin/viewRelease" },
+        
+      ],
     },
   ]
 });

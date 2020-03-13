@@ -99,7 +99,14 @@
                 <el-input v-model="dialogForm.tc"></el-input>
               </el-form-item>
               <el-form-item label="学费：">
-                <el-input v-model="dialogForm.xf"></el-input>
+                 <el-select v-model="dialogForm.xf" clearable placeholder="归属科目">
+                    <el-option
+                      v-for="item in xfoptions"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value"
+                    ></el-option>
+                  </el-select>
               </el-form-item>
               <el-form-item label="进度：">
                 <el-select v-model="dialogForm.jd" placeholder="请选择">
@@ -157,6 +164,10 @@ export default {
         { label: "科目二", value: "科目二" },
         { label: "科目三", value: "科目三" }
       ],
+      xfoptions:[
+        { label: "已交", value: "已交" },
+        { label: "未交", value: "未交" }
+      ],
       tableData: null,
       columns: [
         {
@@ -177,6 +188,11 @@ export default {
         {
           title: "套餐",
           data: "stc",
+          showFlag: { align: "center", width: "" }
+        },
+         {
+          title: "套餐",
+          data: "sxf",
           showFlag: { align: "center", width: "" }
         },
         {

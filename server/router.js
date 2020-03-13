@@ -41,8 +41,20 @@ router.post('/api/updateStudent',services.updateStudent)
 //查看此学员预约
 router.post('/api/myAppointment',services.myAppointment)
 
+//查看此学员预约
+router.post('/api/notPaying',services.notPaying)
+
 //查看所有评价
 router.post('/api/comment',services.comment)
+
+//查看所有公告
+router.post('/api/release',services.release)
+
+//删除公告
+router.post('/api/deleteRelease',services.deleteRelease)
+
+//添加公告
+router.post('/api/addRelease',services.addRelease)
 
 module.exports = router
 

@@ -21,6 +21,8 @@
 > 9.tab页面刷新路由不变，tab切换保持tab页内容不变
 >
 > 10.mysql作为数据库，nodejs写数据库操作，连接后台
+>
+> 11.引入Markdown编辑器
 
 ## Build Setup
 
@@ -220,6 +222,36 @@ Mock.mock('/getUser',{
       }]
 })
 ```
+
+###### 2.7 引入Markdown编辑器
+
+下载
+
+```
+npm install mavon-editor --save
+```
+
+main.js
+
+```
+import mavonEditor from 'mavon-editor'
+import 'mavon-editor/dist/css/index.css'
+Vue.use(mavonEditor)
+```
+
+页面使用.自带@change事件，两个参数分别为输入值和HTML渲染后的值得格式。通过v-html在页面展示
+
+```
+ <mavon-editor v-model="form.content" @change="handle"></mavon-editor>
+ <article v-html="myhtml"></article>
+ ///////////////////////////////////////////////
+  handle(value, render) {
+      this.myhtml = render;
+      console.log(value, render);
+    },
+```
+
+
 
 # 3.实现登录验证
 
