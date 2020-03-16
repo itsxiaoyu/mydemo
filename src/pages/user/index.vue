@@ -10,25 +10,13 @@
           <div>
             <ul class="info">
               <li>角色：学员</li>
-              <li>
-                账号：
+              <li>账号：
                 <span v-show="showInput===false">{{username}}</span>
-                <el-input
-                  v-show="showInput===true"
-                  v-model="username"
-                  maxlength="10"
-                  show-word-limit
-                />
+                <el-input v-show="showInput===true" v-model="username" maxlength="10" show-word-limit/>
               </li>
-              <li>
-                密码：
+              <li>密码：
                 <span v-show="showInput===false">{{password}}</span>
-                <el-input
-                  v-show="showInput===true"
-                  v-model="password"
-                  maxlength="10"
-                  show-word-limit
-                />
+                <el-input v-show="showInput===true" v-model="password" maxlength="10" show-word-limit/>
               </li>
             </ul>
           </div>
