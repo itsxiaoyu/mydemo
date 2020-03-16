@@ -40,6 +40,7 @@ Mock.mock('/getMenu1','get',{
 });
 Mock.mock(
   "/getMenu2",
+  'get',
   {"data":[
     {
       name: "首页",

@@ -12,12 +12,48 @@ exports.login = (req, res) => {
             return res.json({ status: 0, msg: '登录失败', username: username })
         } else {
             if (result[0].password == pwd) {
-                return res.json({ status: 1, msg: '登录成功', username: username, password: pwd })
+                return res.json({ status: 1, msg: '登录成功', result:result[0]})
             }
             return res.json({ status: 0, msg: '密码错误', username: username })
         }
     })
 }
+//更新登录信息
+exports.updateLogin = (req,res)=>{
+    let id=req.body.id
+    let name=req.body.username
+    let password=req.body.password
+    let sql = 'update login set username=?,password=? where id=?'
+    db.base(sql,[name,password,id],(result)=>{
+        return res.json({ status: 1, msg: '更新',result})
+    })
+}
+//首页待办事项列表
+exports.todo = (req,res)=>{
+    let id=req.body.id
+    let sql="select * from todo where id=?";
+    db.base(sql,id,(result)=>{
+        return res.json({ status: 1, msg: 'this is todolist',result})
+    })
+}
+//插入代办事件
+exports.addTodo = (req, res) => {
+    let id = req.body.id
+    let todolist = req.body.todolist
+    let sql = 'insert into todo(id,todolist) values(?,?)'
+    db.base(sql, [id,todolist], (result) => {
+        return res.json({ status: 1, msg: '添加成功todolist' })
+    })
+}
+//删除待办事件
+exports.deleteTodo = (req, res) => {
+    let id = req.body.id
+    let sql = 'delete from todo where oid=?'
+    db.base(sql, id, (result) => {
+        return res.json({ status: 1, msg: '删除成功呢' })
+    })
+}
+//注册
 exports.register = (req, res) => {
     console.log(req.body)
     res.send('测试')
@@ -192,6 +228,7 @@ exports.notPaying=(req,res)=>{
         return res.json({ status: 1, msg: '查询未交费 ',result})
     })
 }
+
 //////////////////////////评价///////////////////////////////////////
 //查找全部评价内容
 exports.comment = (req,res)=>{
@@ -232,5 +269,14 @@ exports.addRelease = (req, res) => {
     let sql = 'INSERT INTO `release`(rtitle,rcontent,rpeople,rtime) values(?,?,?,?)'
     db.base(sql, [title, content, people, time], (result) => {
         return res.json({ status: 1, msg: '添加内容成功', result })
+    })
+}
+//////////////////////////////user登录///////////////////////////////////
+//查找登录学生信息
+exports.loginStudent=(req,res)=>{
+    let id=req.body.id
+   let sql='SELECT * FROM login,student WHERE login.id=? AND student.id=login.id'
+   db.base(sql,id,(result)=>{
+        return res.json({ status: 1, msg: '查询登录信息 ',result})
     })
 }

@@ -23,6 +23,8 @@
 > 10.mysql作为数据库，nodejs写数据库操作，连接后台
 >
 > 11.引入Markdown编辑器
+>
+> 12.引入echarts绘制统计图
 
 ## Build Setup
 
@@ -248,6 +250,57 @@ Vue.use(mavonEditor)
   handle(value, render) {
       this.myhtml = render;
       console.log(value, render);
+    },
+```
+
+###### 2.8 引入echarts
+
+下载
+
+```
+ npm install echarts --save
+```
+
+main.js
+
+```
+import echarts from 'echarts'
+Vue.prototype.$echarts = echarts;
+```
+
+使用
+
+```
+<div id="myChart" style="width: 600px;height: 400px;"></div>
+/////////////////////////////////
+ mounted(){
+    this.drawChart()
+  },
+   drawChart(){
+        let myChart = this.$echarts.init(document.getElementById("myChart"));
+      // 指定图表的配置项和数据
+      let option = {
+        title: {
+          text: "ECharts 入门示例"
+        },
+        tooltip: {},
+        legend: {
+          data: ["销量"]
+        },
+        xAxis: {
+          data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"]
+        },
+        yAxis: {},
+        series: [
+          {
+            name: "销量",
+            type: "bar",
+            data: [5, 20, 36, 10, 10, 20]
+          }
+        ]
+      };
+      // 使用刚指定的配置项和数据显示图表。
+      myChart.setOption(option);
     },
 ```
 

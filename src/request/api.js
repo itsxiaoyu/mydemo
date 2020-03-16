@@ -1,9 +1,7 @@
 import { get,post,getAwait,postAwait} from './http'
 let BASE_URL =  'http://localhost:4000' 
-//登录
-export function getLogin(username,password){
-	return postAwait(BASE_URL+'/api/login',username,password)
-}
+
+/////////////////mock方式api//////////////////////////
 //home页面表格信息
 export  function getUserInfo(param){
 	return getAwait('/getUser',param)
@@ -12,10 +10,31 @@ export  function getUserInfo(param){
 export  function getMenu1(param){
 	return getAwait('/getMenu1',param)
 }
+//user
 export  function getMenu2(param){
 	return getAwait('/getMenu2',param)
 }
-
+//////////////////mock方式api结束/////////////////////////
+//登录
+export function getLogin({...param}){
+	return postAwait(BASE_URL+'/api/login',{...param})
+}
+//更新登录
+export function getUpdateLogin({...param}){
+	return postAwait(BASE_URL+'/api/updateLogin',{...param})
+}
+//首页待办事项
+export function getTodo({...param}){
+	return postAwait(BASE_URL+'/api/todo',{...param})
+}
+//添加首页待办事项
+export function getAddTodo({...param}){
+	return postAwait(BASE_URL+'/api/addTodo',{...param})
+}
+//删除首页待办事项
+export function getDeleteTodo({...param}){
+	return postAwait(BASE_URL+'/api/deleteTodo',{...param})
+}
 //教练信息
 export function getTeacher({...param}){
 	return postAwait(BASE_URL+'/api/teacher',{...param})
@@ -79,4 +98,8 @@ export function getDeleteRelease({...param}){
 //添加公告
 export function getAddRelease({...param}){
 	return postAwait(BASE_URL+'/api/addRelease',{...param})
+}
+//查看登录学生信息
+export function getLoginStudent({...param}){
+	return postAwait(BASE_URL+'/api/loginStudent',{...param})
 }
