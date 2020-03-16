@@ -1,6 +1,30 @@
 <template>
-  <div id="menu1">
-    <el-row :gutter="12">
+  <div id="index">
+    <div class="left">
+        <el-card shadow="hover">
+          <div slot="header" class="clearfix">
+            <span>个人资料</span>
+          <el-button type="text" class="button">修改</el-button>
+          </div>
+          <div>
+            <ul class="info">
+              <li>账号：{{username}}</li>
+              <li>密码：{{password}}</li>
+            </ul>
+        </div>
+        </el-card>
+         <el-card shadow="hover">
+          <div slot="header" class="clearfix">
+            <span>代办事项</span>
+          <el-button type="text" class="button">添加</el-button>
+          </div>
+          <div>
+            el
+        </div>
+        </el-card>
+    </div>
+    <div class="right">
+ <el-row :gutter="12">
       <el-col :span="6">
         <el-card shadow="hover">
           <div slot="header" class="clearfix">
@@ -34,9 +58,12 @@
         </el-card>
       </el-col>
     </el-row>
-    <el-row>
+     <el-row>
       拿证人数echart
     </el-row>
+    </div>
+   
+   
   </div>
 </template>
 
@@ -46,6 +73,8 @@ export default {
   name: "Index",
   data() {
     return {
+      username:'',
+      password:'',
       teacherNum:'',
       studentNum:'',
       notPaying:'',
@@ -60,15 +89,45 @@ export default {
     }),
     getNotPaying().then(res=>{
       this.notPaying=res.result.length
-    })
+    }),
+    this.initName()
   },
-  methods: {}
+  methods: {
+    initName() {
+      let ses = window.sessionStorage;
+      this.username = ses.username;
+      this.password=ses.password
+    }
+  }
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-.el-card{
+#index{
+  display: flex;
+  justify-content: space-around;
+}
+.left{
+  width: 30%;
+  .el-card{
+    margin-bottom: 20px;
+  }
+  .info {
+    list-style: none;
+      li{
+        margin: 5px auto;
+    }
+  }
+  .button {
+    padding: 0;
+    float: right;
+  }
+}
+.right{
+  width:65%;
+  .el-card{
   text-align: center;
+}
 }
 </style>
