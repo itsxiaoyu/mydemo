@@ -49,14 +49,19 @@ Mock.mock(
       children: [],
       icon: "el-icon-s-home"
     },
-     {
-    name: "菜单1",
-    haschild: true,
-    icon: "el-icon-s-fold",
-    children: [
-      { name: "子菜单1-1", haschild: false, index: "/user/menu1" },
-      { name: "子菜单1-2", haschild: false, index: "/user/menu2" }
-    ]
-  },
+    {
+      name: "我的预约",
+      haschild: false,
+      index: "/user/appointment",
+      children: [],
+      icon: "el-icon-phone-outline",
+    },
+    {
+    name: "评论列表",
+    haschild: false,
+    index: "/user/postComment",
+    children: [],
+    icon: "el-icon-goods",
+    },
   ]}
 );

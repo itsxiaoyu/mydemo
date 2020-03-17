@@ -2,7 +2,7 @@
   <div>
     <el-container>
       <el-header>
-        <h1>后台管理系统</h1>
+        <h1>管理系统</h1>
         <el-dropdown>
           <span class="el-dropdown-link">
             {{title}}

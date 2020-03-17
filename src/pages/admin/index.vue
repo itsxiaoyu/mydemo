@@ -75,7 +75,7 @@
     </div>
     <div class="right">
       <el-row :gutter="12">
-        <el-col :span="6">
+        <el-col :span="8">
           <el-card shadow="hover">
             <div slot="header" class="clearfix">
               <span>教练总数</span>
@@ -85,7 +85,7 @@
             </div>
           </el-card>
         </el-col>
-        <el-col :span="6">
+        <el-col :span="8">
           <el-card shadow="hover">
             <div slot="header" class="clearfix">
               <span>学员总数</span>
@@ -95,7 +95,7 @@
             </div>
           </el-card>
         </el-col>
-        <el-col :span="6">
+        <el-col :span="8">
           <el-card shadow="hover">
             <div slot="header" class="clearfix">
               <span>未交费人数</span>
@@ -105,7 +105,7 @@
             </div>
           </el-card>
         </el-col>
-        <el-col :span="6">
+        <!-- <el-col :span="6">
           <el-card shadow="hover">
             <div slot="header" class="clearfix">
               <span>拿证人数</span>
@@ -114,7 +114,7 @@
               <h1>45</h1>
             </div>
           </el-card>
-        </el-col>
+        </el-col> -->
       </el-row>
       <el-row style="display:flex;justify-content:space-around;margin-top:43px">
         <div id="myChart" style="width: 50%;height: 400px;"></div>
@@ -174,13 +174,21 @@ export default {
       },
       xsb:0,
       ptb:0,
-      scb:0
+      scb:0,
+      ksr:0,
+      kms:0,
     };
   },
   created() {
     this.initName();
     getTeacher({ name: "", phone: "", gskm: "" }).then(res => {
       this.teacherNum = res.result.length;
+    }),
+    getTeacher({ name: "", phone: "", gskm: "科目二" }).then(res => {
+      this.kmr=res.result.length
+    }),
+    getTeacher({ name: "", phone: "", gskm: "科目三" }).then(res => {
+      this.kms=res.result.length
     }),
       getStudent({ phone: "" }).then(res => {
         this.studentNum = res.result.length;
@@ -194,7 +202,6 @@ export default {
           if(item.stc==="速成班"){
            this.scb++
           }
-          console.log(this.xsb,this.ptb,this.scb)
         }
       }),
       getNotPaying().then(res => {
@@ -276,7 +283,7 @@ export default {
       // 指定图表的配置项和数据
       let option = {
         title: {
-          text: "教练学员人数占比",
+          text: "各科教练人数占比",
           left: "center"
         },
         tooltip: {
@@ -286,7 +293,7 @@ export default {
         legend: {
           orient: "vertical",
           left: "left",
-          data: ["学生总数", "教练总数"]
+          data: ["科目二教练", "科目三教练"]
         },
         series: [
           {
@@ -295,8 +302,8 @@ export default {
             radius: "55%",
             center: ["50%", "40%"],
             data: [
-              { value: this.studentNum, name: "学生总数" },
-              { value: this.teacherNum, name: "教练总数" }
+              { value: this.kmr, name: "科二教练" },
+              { value: this.kms, name: "科三教练" }
             ],
             emphasis: {
               itemStyle: {

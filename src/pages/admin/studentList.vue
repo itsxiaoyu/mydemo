@@ -18,30 +18,37 @@
     <!-- 添加学员弹出框 -->
     <el-dialog title="添加学员" :visible.sync="dialogFormVisible">
       <el-form :model="dialogForm" :rules="rules" ref="ruleForm">
-        <el-form-item label="姓名" :label-width="formLabelWidth" prop="name">
+        <el-form-item label="姓名：" :label-width="formLabelWidth" prop="name">
           <el-input v-model="dialogForm.name" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="手机号" :label-width="formLabelWidth" prop="phone">
+        <el-form-item label="手机号：" :label-width="formLabelWidth" prop="phone">
           <el-input v-model="dialogForm.phone" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="身份证号" :label-width="formLabelWidth" prop="sfz">
+        <el-form-item label="身份证号：" :label-width="formLabelWidth" prop="sfz">
           <el-input v-model="dialogForm.sfz" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="报名时间：" :label-width="formLabelWidth">
           <el-date-picker v-model="dialogForm.bmsj" type="date" placeholder="选择日期" value-format="yyyy-MM-dd"></el-date-picker>
         </el-form-item>
-        <el-form-item label="套餐：" :label-width="formLabelWidth">
-          <el-input v-model="dialogForm.tc"></el-input>
-        </el-form-item>
         <el-form-item label="学费：" :label-width="formLabelWidth">
-          <el-input v-model="dialogForm.xf"></el-input>
+           <el-select v-model="dialogForm.xf" placeholder="请选择">
+            <el-option label="已交" value="已交"></el-option>
+            <el-option label="未交" value="未交"></el-option>
+          </el-select>
         </el-form-item>
-        <el-form-item label="进度" :label-width="formLabelWidth" prop="gskm">
+         <el-form-item label="套餐：" :label-width="formLabelWidth" v-show="dialogForm.xf==='已交'">
+           <el-select v-model="dialogForm.tc" placeholder="请选择">
+            <el-option label="学生班" value="学生班"></el-option>
+            <el-option label="普通班" value="普通班"></el-option>
+            <el-option label="速成班" value="速成班"></el-option>
+          </el-select>
+        </el-form-item>
+        <!-- <el-form-item label="进度：" :label-width="formLabelWidth" prop="gskm" v-show="dialogForm.xf==='已交'">
           <el-select v-model="dialogForm.jd" placeholder="请选择">
             <el-option label="科目二" value="科目二"></el-option>
             <el-option label="科目三" value="科目三"></el-option>
           </el-select>
-        </el-form-item>
+        </el-form-item> -->
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
@@ -95,11 +102,8 @@
               <el-form-item label="报名时间：">
                 <el-date-picker v-model="dialogForm.bmsj" type="date" placeholder="选择日期" value-format="yyyy-MM-dd"></el-date-picker>
               </el-form-item>
-              <el-form-item label="套餐：">
-                <el-input v-model="dialogForm.tc"></el-input>
-              </el-form-item>
               <el-form-item label="学费：">
-                 <el-select v-model="dialogForm.xf" clearable placeholder="归属科目">
+                 <el-select v-model="dialogForm.xf" clearable >
                     <el-option
                       v-for="item in xfoptions"
                       :key="item.value"
@@ -108,12 +112,19 @@
                     ></el-option>
                   </el-select>
               </el-form-item>
-              <el-form-item label="进度：">
+              <el-form-item label="套餐：" v-show="dialogForm.xf==='已交'">
+                  <el-select v-model="dialogForm.tc" placeholder="请选择">
+                    <el-option label="学生班" value="学生班"></el-option>
+                    <el-option label="普通班" value="普通班"></el-option>
+                    <el-option label="速成班" value="速成班"></el-option>
+                  </el-select>
+              </el-form-item>
+              <!-- <el-form-item label="进度：">
                 <el-select v-model="dialogForm.jd" placeholder="请选择">
                   <el-option label="科目二" value="科目二"></el-option>
                   <el-option label="科目三" value="科目三"></el-option>
                 </el-select>
-              </el-form-item>
+              </el-form-item> -->
               <el-form-item>
                 <el-button type="primary" @click="edit">编辑</el-button>
               </el-form-item>
@@ -195,11 +206,11 @@ export default {
           data: "sxf",
           showFlag: { align: "center", width: "" }
         },
-        {
-          title: "进度",
-          data: "sjd",
-          showFlag: { align: "center", width: "" }
-        },
+        // {
+        //   title: "进度",
+        //   data: "sjd",
+        //   showFlag: { align: "center", width: "" }
+        // },
         {
           title: "操作",
           data: "operate",
@@ -287,9 +298,9 @@ export default {
       this.dialogForm.bmsj = row.sbmsj;
       this.dialogForm.tc = row.stc;
       this.dialogForm.xf = row.sxf;
-      this.dialogForm.jd = row.sjd;
       getMyAppointment({id:this.dialogForm.id}).then(res=>{
         this.courseData=res.result
+        this.dialogForm.jd=res.result[0].tgskm
       })
     },
     deleteRow(row) {
@@ -308,7 +319,7 @@ export default {
         bmsj: this.dialogForm.bmsj,
         tc: this.dialogForm.tc,
         xf: this.dialogForm.xf,
-        jd: this.dialogForm.jd
+        // jd: this.dialogForm.jd
       }).then(res => {
         this.getData();
         this.drawer = false;
@@ -330,11 +341,10 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           getAddStudent({
-            tid:null,
             name: this.dialogForm.name,
             phone: this.dialogForm.phone,
             sfz: this.dialogForm.sfz,
-            jd: this.dialogForm.jd,
+            // jd: this.dialogForm.jd,
             tc: this.dialogForm.tc,
             xf: this.dialogForm.xf,
             bmsj: this.dialogForm.bmsj
