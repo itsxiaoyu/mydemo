@@ -59,6 +59,9 @@ router.post('/api/notPaying',services.notPaying)
 //查看所有评价
 router.post('/api/comment',services.comment)
 
+//添加评价
+router.post('/api/addComment',services.addComment)
+
 //查看所有公告
 router.post('/api/release',services.release)
 
@@ -70,6 +73,13 @@ router.post('/api/addRelease',services.addRelease)
 
 //登录学生信息
 router.post('/api/loginStudent',services.loginStudent)
+
+//预约教练
+router.post('/api/appointTeacher',services.appointTeacher)
+
+//更新user信息
+router.post('/api/updateUser',services.updateUser)
+
 
 module.exports = router
 

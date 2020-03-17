@@ -41,19 +41,16 @@ export default {
   created() {
     this.getData()
   },
- 
   methods: {
-
     ellipsis(value) {
       if (!value) return "";
       if (value.length > 90) {
         return value.slice(0, 90) + "...";
       }
       return value;
-    
   },
     getData(){
-      getRelease().then(res=>{
+      getRelease({rpeople:''}).then(res=>{
         this.releaseData=res.result
         if(res.result.rpeople==='0'){
           this.people='全部人'

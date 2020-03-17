@@ -9,6 +9,7 @@
           <el-rate  v-if="item.showFlag.rate" v-model="scope.row[item.data]"  disabled></el-rate>
           <el-link  v-if="item.showFlag.delete" @click.native.prevent="deleteRow(scope.$index, tableData)" type="primary">删除</el-link>
           <el-link  v-if="item.showFlag.view" @click="view(scope.row)" type="primary">查看</el-link>
+          <el-link  v-if="item.showFlag.appointment" @click="appointment(scope.row)" type="primary">预约</el-link>
           <span v-else>{{scope.row[item.data]}}</span>
         </template>
       </el-table-column>
@@ -59,10 +60,13 @@ export default {
     view(row) {
       this.$emit("view", row);
     },
-     deleteRow(index, rows) {
+    deleteRow(index, rows) {
         rows.splice(index+1, 1);
         this.$emit("deleteRow",rows[index])
-      },
+    },
+    appointment(row) {
+      this.$emit("appointment", row);
+    },
   }
 };
 </script>

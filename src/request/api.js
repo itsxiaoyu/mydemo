@@ -87,6 +87,10 @@ export function getNotPaying({...param}){
 export function getComment({...param}){
 	return postAwait(BASE_URL+'/api/comment',{...param})
 }
+//添加评价
+export function getAddComment({...param}){
+	return postAwait(BASE_URL+'/api/addComment',{...param})
+}
 //查看公告
 export function getRelease({...param}){
 	return postAwait(BASE_URL+'/api/release',{...param})
@@ -102,4 +106,12 @@ export function getAddRelease({...param}){
 //查看登录学生信息
 export function getLoginStudent({...param}){
 	return postAwait(BASE_URL+'/api/loginStudent',{...param})
+}
+//预约教练
+export function getAppointTeacher({...param}){
+	return postAwait(BASE_URL+'/api/appointTeacher',{...param})
+}
+//更新user信息
+export function getUpdateUser({...param}){
+	return postAwait(BASE_URL+'/api/updateUser',{...param})
 }

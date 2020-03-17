@@ -131,10 +131,10 @@ exports.updateTeacher = (req,res)=>{
 exports.myStudent=(req,res)=>{
     let id=req.body.id
     let arr=[]
-    let sql='select * from student where 1=1'
+    let sql='SELECT * FROM student WHERE 1=1'
     if(id!==''){
-        id="%"+id+"%"
-        sql+=" and tid like ?"
+        id=id
+        sql+=" AND student.sid IN(SELECT sc.sid FROM sc WHERE sc.tid=?)"
         arr.push(id)
     }
     db.base(sql,arr,(result)=>{
@@ -179,19 +179,18 @@ exports.deleteStudent = (req, res) => {
 exports.addStudent = (req, res) => {
     let name = req.body.name
     let phone = req.body.phone
-    let tid = req.body.tid
     let bmsj = req.body.bmsj
     let tc = req.body.tc
     let xf = req.body.xf
     let jd = req.body.jd
     let sfz = req.body.sfz
     let querysql = "SELECT * FROM student WHERE sname=?";
-    let sql = 'INSERT INTO student(sname,sphone,tid,sbmsj,stc,sxf,sjd,sfz) VALUES(?,?,?,?,?,?,?,?)'
+    let sql = 'INSERT INTO student(sname,sphone,sbmsj,stc,sxf,sjd,sfz) VALUES(?,?,?,?,?,?,?)'
     db.base(querysql, name, (result) => {
         if (result.length > 0) {
             return res.json({ status: 0, msg: '该用户已注册' })
         } else {
-            db.base(sql, [name, phone, tid, bmsj, tc,xf,jd,sfz], (result) => {
+            db.base(sql, [name, phone, bmsj, tc,xf,jd,sfz], (result) => {
                 return res.json({ status: 1, msg: '添加成功', result })
             })
         }
@@ -215,7 +214,7 @@ exports.updateStudent = (req,res)=>{
 //查找此学生的预约记录
 exports.myAppointment=(req,res)=>{
     let id=req.body.id
-   let sql='SELECT sc.time,teacher.tname,teacher.tphone FROM sc,teacher WHERE sc.sid=? AND teacher.tid=sc.tid'
+   let sql='SELECT sc.time,teacher.tname,teacher.tphone,teacher.tgskm FROM sc,teacher WHERE sc.sid=? AND teacher.tid=sc.tid'
    db.base(sql,id,(result)=>{
         return res.json({ status: 1, msg: '查询学生 ',result})
     })
@@ -233,23 +232,45 @@ exports.notPaying=(req,res)=>{
 //查找全部评价内容
 exports.comment = (req,res)=>{
     let name=req.body.name
-    let sql="SELECT student.sname,teacher.tname,comment.pjxj,comment.pjnr,comment.pjsj FROM student,teacher,comment WHERE comment.sid=student.sid AND comment.tid=teacher.tid";
+    let sql="SELECT teacher.tname,comment.mname,comment.pjxj,comment.pjnr,comment.pjsj FROM teacher,comment WHERE  comment.tid=teacher.tid";
     let arr = [];
     if(name!=""){
         sql += " AND comment.tid IN(SELECT tid FROM teacher WHERE tname=?)";
         arr.push(name);
     }
-    console.log(arr,sql)
     db.base(sql,arr,(result)=>{
         return res.json({ status: 1, msg: 'this is评论信息',result})
     })
 }
+//插入
+exports.addComment = (req, res) => {
+    let name = req.body.name
+    let tname = req.body.tname
+    let pjxj = req.body.pjxj
+    let pjnr = req.body.pjnr
+    let pjsj=req.body.pjsj
+    let querySql='SELECT teacher.tid from teacher WHERE teacher.tname=?'
+    let sql = 'INSERT INTO `comment`(mname,tid,pjxj,pjnr,pjsj) values(?,?,?,?,?)'
+    db.base(querySql, [tname], (result) => {
+        let tid=result[0].tid
+        db.base(sql, [name, tid, pjxj, pjnr,pjsj], (result) => {
+            return res.json({ status: 1, msg: '添加评论成功', result })
+        })
+    })
+   
+}
 ///////////////////////////////发布/////////////////////////////////////////
 //查找所有发布内容
 exports.release=(req,res)=>{
-    // let id=req.body.id
+    let rpeople=req.body.rpeople
+    let arr=[]
    let sql='SELECT * FROM `release` WHERE 1=1'
-   db.base(sql,null,(result)=>{
+   if(rpeople!=""){
+    rpeople = rpeople;
+    sql += " and rpeople=?";
+    arr.push(rpeople);
+    }
+   db.base(sql,arr,(result)=>{
         return res.json({ status: 1, msg: '所有公告 ',result})
     })
 }
@@ -278,5 +299,33 @@ exports.loginStudent=(req,res)=>{
    let sql='SELECT * FROM login,student WHERE login.id=? AND student.id=login.id'
    db.base(sql,id,(result)=>{
         return res.json({ status: 1, msg: '查询登录信息 ',result})
+    })
+}
+//预约教练，一个教练同一天只能有三个学员
+exports.appointTeacher=(req,res)=>{
+    let time=req.body.time
+    let tid=req.body.tid
+    let sid=req.body.sid
+    let qyerySql='SELECT * FROM sc WHERE tid=? and time=?'
+   let sql='INSERT INTO SC(time,sid,tid) VALUES(?,?,?)'
+   db.base(qyerySql,[tid,time],(result)=>{
+       if(result.length>2){
+        return res.json({ status: 0, msg: '插入失败，教练行程已满 ',result})
+       }else{
+           db.base(sql,[time,sid,tid],(result)=>{
+            return res.json({ status: 1, msg: '插入成功 ',result})
+           })
+       }
+    })
+}
+//更新user
+exports.updateUser = (req,res)=>{
+    let id=req.body.id
+    let name=req.body.name
+    let phone=req.body.phone
+    let sfz=req.body.sfz
+    let sql = 'UPDATE student SET sname=?,sphone=?,sfz=? WHERE sid=?'
+    db.base(sql,[name,phone,sfz,id],(result)=>{
+        return res.json({ status: 1, msg: '更新',result})
     })
 }

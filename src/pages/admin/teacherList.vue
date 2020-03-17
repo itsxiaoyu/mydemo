@@ -316,6 +316,7 @@ export default {
         this.dialogForm.qjyy=row.tqjyy
       }
       getMyStudent({id:row.tid}).then(res=>{
+        console.log(res)
         this.studentData=res.result
       })
         //当天的教学安排
