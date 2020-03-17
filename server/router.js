@@ -4,9 +4,21 @@ const services = require('./services.js')
 // router.get('/',services.start)
 // 登录功能
 router.post('/api/login',services.login)
+
+// 更新登录信息
+router.post('/api/updateLogin',services.updateLogin)
+
+//首页待办事项列表
+router.post('/api/todo',services.todo)
+
+//添加首页待办事项列表
+router.post('/api/addTodo',services.addTodo)
+
+//删除首页待办事项列表
+router.post('/api/deleteTodo',services.deleteTodo)
+
 // 注册功能
 router.post('/api/register',services.register)
-
 
 //教练列表
 router.post('/api/teacher',services.teacher)
@@ -55,6 +67,9 @@ router.post('/api/deleteRelease',services.deleteRelease)
 
 //添加公告
 router.post('/api/addRelease',services.addRelease)
+
+//登录学生信息
+router.post('/api/loginStudent',services.loginStudent)
 
 module.exports = router
 

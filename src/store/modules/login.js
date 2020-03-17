@@ -33,12 +33,14 @@ const actions = {
         console.log(res)
         if(res.status==1){
           let ses = window.sessionStorage;
-          ses.setItem("username", res.username);
-          ses.setItem("password", res.password);
+          ses.setItem("id", res.result.id);
+          ses.setItem("username", res.result.username);
+          ses.setItem("password", res.result.password);
           console.log(ses, "ses");
           // state.title = ses.username;
-          if(res.username==="user"){
+          if(res.result.role===1){
             router.push("/user/index")
+            console.log(11111)
           }else{
             router.push("/admin/index");
           }

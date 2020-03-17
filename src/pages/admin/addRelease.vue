@@ -46,11 +46,11 @@ export default {
         },
         {
           value: "1",
-          label: "教练"
+          label: "学员"
         },
         {
           value: "2",
-          label: "学员"
+          label: "教练"
         }
       ],
       timeValue: "",

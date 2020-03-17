@@ -1,10 +1,10 @@
 const state = {
-  content:null
+  content:null,  //发布内容
 };
 const mutations = {
   setContent(state,param){
     state.content=param
-  }
+  },
 };
 const actions = {
  

@@ -17,7 +17,11 @@ Vue.use(Fragment.Plugin)
 import mavonEditor from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
 Vue.use(mavonEditor)
-//
+//echarts
+import echarts from 'echarts'
+Vue.prototype.$echarts = echarts;
+
+
 Vue.config.productionTip = false
 require('./mock/index.js')
 
