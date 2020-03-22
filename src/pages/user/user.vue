@@ -3,7 +3,7 @@
     <header-bar></header-bar>
     <el-container>
       <aside-bar :menuList="menu2"></aside-bar>
-      <div style="display:inline-block;height:600px;width:100%;">
+      <div style="display:inline-block;min-height:600px;width:100%;">
         <tabs></tabs>
         <div style="padding:20px;">
           <keep-alive>
@@ -82,5 +82,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+/deep/ .el-timeline{
+  max-height: 600px;
+    overflow: auto;
+}
 </style>
-© 2020 GitHub, Inc.

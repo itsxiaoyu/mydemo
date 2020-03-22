@@ -2,7 +2,7 @@
   <div>
     <el-container>
       <el-header>
-        <h1>管理系统</h1>
+        <h1>驾校管理系统</h1>
         <el-dropdown>
           <span class="el-dropdown-link">
             {{title}}
@@ -31,6 +31,7 @@ export default {
   created() {
     this.initName();
   },
+
   computed: {
     // ...mapState({
     //   title: state => state.login.title

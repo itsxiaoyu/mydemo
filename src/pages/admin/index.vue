@@ -16,6 +16,7 @@
               type="text"
               @click="save"
               v-show="showInput"
+              class="edit"
             >保存</el-button>
           </div>
           <div>
@@ -214,6 +215,11 @@ export default {
       this.drawChart();
       this.drawRightChart()
     }, 1000);
+    document.addEventListener("click", function(e) {
+      if (e.target.className != "edit") {
+        this.showInput = true;
+      }
+    });
   },
   methods: {
     initName() {
@@ -388,13 +394,19 @@ export default {
     .el-alert {
       margin-bottom: 10px;
     }
+      /deep/ .el-card__body{
+  max-height: 350px !important; 
+  overflow: auto;
+}
   }
   .right {
     width: 65%;
     .el-card {
       text-align: center;
     }
+
   }
+
 }
 
 </style>

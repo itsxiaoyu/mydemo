@@ -20,7 +20,9 @@ Vue.use(mavonEditor)
 //echarts
 import echarts from 'echarts'
 Vue.prototype.$echarts = echarts;
-
+//粒子特效
+import VueParticles from 'vue-particles'  
+Vue.use(VueParticles)  
 
 Vue.config.productionTip = false
 require('./mock/index.js')

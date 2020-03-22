@@ -1,8 +1,8 @@
 <template>
   <div class="box">
-    <el-container style="display:inline-block">
+    <el-container style="display:inline-block;height:100%">
       <el-menu
-        style="height:600px;background:#545c64;"
+        style="height:100%;background:#545c64;"
         :unique-opened='true'
         :default-active="activeItem"
         router

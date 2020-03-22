@@ -3,9 +3,9 @@
     <header-bar></header-bar>
     <el-container>
       <aside-bar :menuList="menu"></aside-bar>
-      <div style="display:inline-block;height:600px;width:100%;">
+      <div style="display:inline-block;min-height:600px;min-width:90%;padding:20px">
         <tabs></tabs>
-        <div style="padding:20px;">
+        <div>
           <keep-alive>
             <router-view></router-view>
           </keep-alive>

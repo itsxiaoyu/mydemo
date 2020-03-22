@@ -22,6 +22,9 @@
           <el-form-item>
             <el-button type="primary" @click="search">查询</el-button>
           </el-form-item>
+           <el-form-item>
+            <el-button type="primary" @click="export2Excel">导出Excel</el-button>
+          </el-form-item>
         </el-form>
       </el-col>
       <el-col :span="6" class="text-right">
@@ -421,6 +424,20 @@ export default {
         console.log(`当前页: ${val}`);
       this.showData=this.tableData.slice((val-1)*this.pageSize,val*this.pageSize)
     },
+    //导出exCel
+    formatJson(filterVal, jsonData) {
+    　　　　return jsonData.map(v => filterVal.map(j => v[j]))
+    　　},
+    export2Excel() {
+    　　　　require.ensure([], () => {
+    　　　　　　const { export_json_to_excel } = require('../../vendor/Export2Excel')
+    　　　　　　const tHeader = ['序号','姓名','手机号','归属科目','状态'];
+    　　　　　　const filterVal = ['tid', 'tname', 'tphone', 'tgskm','tstatus'];
+    　　　　　　const list = this.tableData;
+    　　　　　　const data = this.formatJson(filterVal,list);
+    　　　　　　export_json_to_excel(tHeader, data, '教练列表');
+    　　　　})
+    　 },
   }
 };
 </script>
