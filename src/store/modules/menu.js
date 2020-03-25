@@ -5,7 +5,8 @@ const state = {
   //菜单
   menu: [],
   tabs: [],
-  activeItem: "" // 默认选中首页
+  activeItem: "" ,// 默认选中首页
+  isCollapse:true,//侧边栏展示
 };
 const mutations = {
   initMenu(state, param) {
@@ -19,7 +20,10 @@ const mutations = {
   },
   switchTab(state, nowIndex) {
     state.activeItem = nowIndex;
-  }
+  },
+  isCollapse(state,value){
+    state.isCollapse=value
+  }
 };
 
 const actions = {

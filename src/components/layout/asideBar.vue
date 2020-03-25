@@ -3,7 +3,7 @@
     <el-container style="display:inline-block;height:100%">
       <el-menu
         style="height:100%;background:#545c64;"
-        :unique-opened='true'
+      
         :default-active="activeItem"
         router
         @select="clickMenuItem"
@@ -35,10 +35,10 @@
       </el-menu>
     </el-container>
     <!-- 侧边栏菜单开关 -->
-      <div class="closeSide" @click="isCollapse=!isCollapse">
+      <!-- <div class="closeSide" @click="isCollapse=!isCollapse">
         <i class="el-icon-d-arrow-left" v-show="isCollapse==true"></i>
         <i class="el-icon-d-arrow-right" v-show="isCollapse==false"></i>
-      </div>
+      </div> -->
   </div>
 </template>
 
@@ -54,12 +54,13 @@ export default {
   },
   data() {
     return {
-      isCollapse: true,
+      // isCollapse: true,
     };
   },
   computed: {
     ...mapState({
-      activeItem:state=>state.menu.activeItem
+      activeItem:state=>state.menu.activeItem,
+      isCollapse:state=>state.menu.isCollapse
     })
   },
   methods: {
@@ -94,6 +95,5 @@ export default {
 }
 .box{
   position: relative;
-  margin-right: 10px;
 }
 </style>

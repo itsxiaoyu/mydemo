@@ -7,6 +7,7 @@ export default new Router({
     //needLogin判断是否需要登录才可以进入
     { path: '/', component:()=>import('@/pages/login')},
     { path: '/login', component:()=>import('@/pages/login')},
+    { path: '/register', component:()=>import('@/pages/register')},
     { 
       path: '/user',
       component:()=>import('@/pages/user/user'),
@@ -36,6 +37,12 @@ export default new Router({
           component:()=>import('@/pages/user/studentView'),
           meta:{needLogin:true,title:'公告详情'},
         },
+        {
+          path:'/user/suggest',
+          name:'user/suggest',
+          component:()=>import('@/pages/user/suggest'),
+          meta:{needLogin:true,title:'我的建议'},
+        },
       ]
     },
     { 
@@ -60,6 +67,18 @@ export default new Router({
           name:'admin/studentList',
           component:()=>import('@/pages/admin/studentList'),
           meta:{needLogin:true,title:'学员列表'},
+        },
+        {
+          path:'/admin/car',
+          name:'admin/car',
+          component:()=>import('@/pages/admin/car'),
+          meta:{needLogin:true,title:'车辆管理'},
+        },
+        {
+          path:'/admin/message',
+          name:'admin/message',
+          component:()=>import('@/pages/admin/message'),
+          meta:{needLogin:true,title:'消息中心'},
         },
         {
           path:'/admin/comment',

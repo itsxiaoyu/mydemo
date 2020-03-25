@@ -3,13 +3,12 @@
     <header-bar></header-bar>
     <el-container>
       <aside-bar :menuList="menu"></aside-bar>
-      <div style="display:inline-block;min-height:600px;min-width:90%;padding:20px">
+      <div class="content-right" :style="{width: rightWidth +'%'}">
         <tabs></tabs>
-        <div>
+        <div style="padding:20px">
           <keep-alive>
             <router-view></router-view>
           </keep-alive>
-          
         </div>
       </div>
     </el-container>
@@ -28,17 +27,28 @@ export default {
   components: {
     headerBar,
     asideBar,
-    tabs
+    tabs,
   },
   data() {
     return {
-      isCollapse: true,
+    rightWidth:94
     };
   },
   computed: {
     ...mapState({
-      menu:state=>state.menu.menu
-    })
+      menu:state=>state.menu.menu,
+      isCollapse:state=>state.menu.isCollapse
+    }),
+  },
+  watch: {
+      isCollapse(val) {
+        this.value = this.isCollapse;
+        if(this.value===true){
+          this.rightWidth=94
+        }else{
+          this.rightWidth=78
+        }
+      }
   },
   created() {
     this.$store.dispatch('getMenu',{index:1,path:this.$route.path})
@@ -51,5 +61,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-
+.content-right{
+  display:inline-block;
+  min-height:600px;
+}
 </style>

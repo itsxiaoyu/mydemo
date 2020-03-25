@@ -35,7 +35,7 @@ export default {
       form: {
         title: "",
         people: "",
-        content: '### demo \n ![image](0)'
+        content: ''
       },
       // myhtml: "",
       defaultData: "preview",

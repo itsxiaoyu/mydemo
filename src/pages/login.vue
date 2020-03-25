@@ -45,7 +45,7 @@
         <el-form-item class="operate">
           <el-button type="primary" @click="submitForm('ruleForm')">登录</el-button>
           <el-button @click="resetForm('ruleForm')">重置</el-button>
-          <p class="operate_p">没有账号? 去注册</p>
+          <p class="operate_p" @click="goRegister">没有账号? 去注册</p>
         </el-form-item>
       </el-form>
     </div>
@@ -64,8 +64,8 @@ export default {
         pwd: ""
       },
       rules: {
-        user: [{ required: true, trigger: "blur" }],
-        pwd: [{ required: true, trigger: "blur" }]
+        user: [{ required: true, trigger: "blur",message:'请输入账号' }],
+        pwd: [{ required: true, trigger: "blur",message:'请输入密码' }]
       }
     };
   },
@@ -82,6 +82,9 @@ export default {
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
+    },
+    goRegister(){
+      this.$router.push({path:'/register'})
     }
   }
 };

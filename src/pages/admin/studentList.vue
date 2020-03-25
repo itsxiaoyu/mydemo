@@ -18,6 +18,12 @@
     <!-- 添加学员弹出框 -->
     <el-dialog title="添加学员" :visible.sync="dialogFormVisible">
       <el-form :model="dialogForm" :rules="rules" ref="ruleForm">
+        <el-form-item label="账号：" :label-width="formLabelWidth" prop="username">
+          <el-input v-model="dialogForm.username" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="密码：" :label-width="formLabelWidth" prop="password">
+          <el-input v-model="dialogForm.password" autocomplete="off"></el-input>
+        </el-form-item>
         <el-form-item label="姓名：" :label-width="formLabelWidth" prop="name">
           <el-input v-model="dialogForm.name" autocomplete="off"></el-input>
         </el-form-item>
@@ -187,6 +193,16 @@ export default {
           showFlag: { align: "center", width: "" }
         },
         {
+          title: "账号",
+          data: "username",
+          showFlag: { align: "center", width: "" }
+        },
+        {
+          title: "密码",
+          data: "password",
+          showFlag: { align: "center", width: "" }
+        },
+        {
           title: "手机号",
           data: "sphone",
           showFlag: { align: "center", width: "" }
@@ -206,11 +222,6 @@ export default {
           data: "sxf",
           showFlag: { align: "center", width: "" }
         },
-        // {
-        //   title: "进度",
-        //   data: "sjd",
-        //   showFlag: { align: "center", width: "" }
-        // },
         {
           title: "操作",
           data: "operate",
@@ -224,6 +235,8 @@ export default {
       dialogFormVisible: false,
       dialogForm: {
         id: "",
+        username:'',
+        password:'',
         name: "",
         phone: "",
         sfz: "",
@@ -238,7 +251,8 @@ export default {
           { required: true, message: "请输入名称", trigger: "blur" },
           { min: 1, max: 5, message: "长度在 1 到 5 个字符", trigger: "blur" }
         ],
-        jd: [{ required: true, message: "请选择进度", trigger: "blur" }]
+        username: [{ required: true, message: "请输入账号", trigger: "blur" }],
+        password: [{ required: true, message: "请输入密码", trigger: "blur" }],
       },
       courseData: null,
       courseColumns: [
@@ -328,6 +342,8 @@ export default {
     addOpen() {
       this.dialogFormVisible = true;
       this.dialogForm.id = "";
+       this.dialogForm.username = "";
+      this.dialogForm.password = "";
       this.dialogForm.name = "";
       this.dialogForm.phone = "";
       this.dialogForm.sfz = "";
@@ -341,6 +357,8 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           getAddStudent({
+            username:this.dialogForm.username,
+            password:this.dialogForm.password,
             name: this.dialogForm.name,
             phone: this.dialogForm.phone,
             sfz: this.dialogForm.sfz,

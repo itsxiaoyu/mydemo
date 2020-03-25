@@ -5,6 +5,9 @@ const services = require('./services.js')
 // 登录功能
 router.post('/api/login',services.login)
 
+// 注册功能
+router.post('/api/register',services.register)
+
 // 更新登录信息
 router.post('/api/updateLogin',services.updateLogin)
 
@@ -16,9 +19,6 @@ router.post('/api/addTodo',services.addTodo)
 
 //删除首页待办事项列表
 router.post('/api/deleteTodo',services.deleteTodo)
-
-// 注册功能
-router.post('/api/register',services.register)
 
 //教练列表
 router.post('/api/teacher',services.teacher)
@@ -80,6 +80,29 @@ router.post('/api/appointTeacher',services.appointTeacher)
 //更新user信息
 router.post('/api/updateUser',services.updateUser)
 
+//车辆
+router.post('/api/car',services.car)
+
+//无车教练
+router.post('/api/notCarTeacher',services.notCarTeacher)
+
+//添加car
+router.post('/api/addCar',services.addCar)
+
+//删除car
+router.post('/api/deleteCar',services.deleteCar)
+
+//消息列表
+router.post('/api/message',services.message)
+
+//更新消息列表
+router.post('/api/updateMessage',services.updateMessage)
+
+//插入
+router.post('/api/insertMessage',services.insertMessage)
+
+//查询该学员提交的的message
+router.post('/api/studentMessage',services.studentMessage)
 
 module.exports = router
 

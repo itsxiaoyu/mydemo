@@ -45,10 +45,6 @@
                 <span>{{sbmsj}}</span>
             </li>
             <li v-show="sxf==='已交'">
-              <label>进度：</label>
-                <span>{{sjd}}</span>
-            </li>
-            <li v-show="sxf==='已交'">
               <label>套餐：</label>
                 <span>{{stc}}</span>
             </li>
@@ -94,7 +90,6 @@ export default {
       sfz:'',
       sphone:'',
       sbmsj:'',
-      sjd:'',
       sxf:'',
       stc:'',
       releaseData:null,
@@ -111,7 +106,6 @@ export default {
       this.sfz=res.result[0].sfz
       this.sphone=res.result[0].sphone
       this.sbmsj=res.result[0].sbmsj
-      this.sjd=res.result[0].sjd
       this.sxf=res.result[0].sxf
       this.stc=res.result[0].stc
     })

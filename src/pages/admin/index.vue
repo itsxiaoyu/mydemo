@@ -18,6 +18,13 @@
               v-show="showInput"
               class="edit"
             >保存</el-button>
+            <el-button
+              style="float: right; padding: 3px 10px"
+              type="text"
+              @click="cancel"
+              v-show="showInput"
+              class="edit"
+            >取消</el-button>
           </div>
           <div>
             <ul class="info">
@@ -57,7 +64,7 @@
               v-for="(item,index) in todolist"
               :key="index"
               type="success"
-              @close="deleteItem(item.oid)"
+              @click="deleteItem(item.oid)"
             >
               <template slot="title">
                 <el-popover
@@ -77,7 +84,7 @@
     <div class="right">
       <el-row :gutter="12">
         <el-col :span="8">
-          <el-card shadow="hover">
+          <el-card shadow="hover" class="teacher-style">
             <div slot="header" class="clearfix">
               <span>教练总数</span>
             </div>
@@ -87,7 +94,7 @@
           </el-card>
         </el-col>
         <el-col :span="8">
-          <el-card shadow="hover">
+          <el-card shadow="hover" class="student-style">
             <div slot="header" class="clearfix">
               <span>学员总数</span>
             </div>
@@ -97,7 +104,7 @@
           </el-card>
         </el-col>
         <el-col :span="8">
-          <el-card shadow="hover">
+          <el-card shadow="hover" class="nopay-style">
             <div slot="header" class="clearfix">
               <span>未交费人数</span>
             </div>
@@ -106,20 +113,10 @@
             </div>
           </el-card>
         </el-col>
-        <!-- <el-col :span="6">
-          <el-card shadow="hover">
-            <div slot="header" class="clearfix">
-              <span>拿证人数</span>
-            </div>
-            <div>
-              <h1>45</h1>
-            </div>
-          </el-card>
-        </el-col> -->
       </el-row>
       <el-row style="display:flex;justify-content:space-around;margin-top:43px">
-        <div id="myChart" style="width: 50%;height: 400px;"></div>
-        <div id="myRightChart" style="width: 50%;height: 400px;"></div>
+        <div id="myChart" style="width: 50%;height: 340px;"></div>
+        <div id="myRightChart" style="width: 50%;height: 340px;"></div>
       </el-row>
     </div>
     <el-dialog title="添加代办事项" :visible.sync="dialogFormVisible">
@@ -173,11 +170,11 @@ export default {
           }
         ]
       },
-      xsb:0,
-      ptb:0,
-      scb:0,
-      ksr:0,
-      kms:0,
+      xsb: 0,
+      ptb: 0,
+      scb: 0,
+      ksr: 0,
+      kms: 0
     };
   },
   created() {
@@ -185,23 +182,23 @@ export default {
     getTeacher({ name: "", phone: "", gskm: "" }).then(res => {
       this.teacherNum = res.result.length;
     }),
-    getTeacher({ name: "", phone: "", gskm: "科目二" }).then(res => {
-      this.kmr=res.result.length
-    }),
-    getTeacher({ name: "", phone: "", gskm: "科目三" }).then(res => {
-      this.kms=res.result.length
-    }),
+      getTeacher({ name: "", phone: "", gskm: "科目二" }).then(res => {
+        this.kmr = res.result.length;
+      }),
+      getTeacher({ name: "", phone: "", gskm: "科目三" }).then(res => {
+        this.kms = res.result.length;
+      }),
       getStudent({ phone: "" }).then(res => {
         this.studentNum = res.result.length;
-        for(var item of res.result){
-          if(item.stc==="学生班"){
-           this.xsb++
+        for (var item of res.result) {
+          if (item.stc === "学生班") {
+            this.xsb++;
           }
-          if(item.stc==="普通班"){
-           this.ptb++
+          if (item.stc === "普通班") {
+            this.ptb++;
           }
-          if(item.stc==="速成班"){
-           this.scb++
+          if (item.stc === "速成班") {
+            this.scb++;
           }
         }
       }),
@@ -213,7 +210,7 @@ export default {
   mounted() {
     setTimeout(() => {
       this.drawChart();
-      this.drawRightChart()
+      this.drawRightChart();
     }, 1000);
     document.addEventListener("click", function(e) {
       if (e.target.className != "edit") {
@@ -231,6 +228,10 @@ export default {
     edit() {
       this.showInput = !this.showInput;
     },
+    cancel() {
+      this.showInput = !this.showInput;
+      this.initName();
+    },
     save() {
       this.showInput = !this.showInput;
       getUpdateLogin({
@@ -244,7 +245,7 @@ export default {
         });
         setTimeout(() => {
           this.$router.push({ path: "/login" });
-        }, 1000);
+        }, 500);
         window.sessionStorage.removeItem("username");
       });
     },
@@ -255,7 +256,9 @@ export default {
     },
     deleteItem(id) {
       getDeleteTodo({ id: id }).then(res => {
-        this.getTodoData();
+        if (res.status === 1) {
+          this.getTodoData();
+        }
       });
     },
     addItem() {
@@ -306,7 +309,7 @@ export default {
             name: "人数占比",
             type: "pie",
             radius: "55%",
-            center: ["50%", "40%"],
+            center: ["50%", "60%"],
             data: [
               { value: this.kmr, name: "科二教练" },
               { value: this.kms, name: "科三教练" }
@@ -324,7 +327,7 @@ export default {
       // 使用刚指定的配置项和数据显示图表。
       myChart.setOption(option);
     },
-     drawRightChart() {
+    drawRightChart() {
       let myChart = this.$echarts.init(document.getElementById("myRightChart"));
       // 指定图表的配置项和数据
       let option = {
@@ -339,18 +342,18 @@ export default {
         legend: {
           orient: "vertical",
           left: "left",
-          data: ["学生班", "普通班","速成班"]
+          data: ["学生班", "普通班", "速成班"]
         },
         series: [
           {
             name: "人数占比",
             type: "pie",
             radius: "55%",
-            center: ["50%", "40%"],
+            center: ["50%", "60%"],
             data: [
               { value: this.xsb, name: "学生班" },
               { value: this.ptb, name: "普通班" },
-              { value: this.scb, name: "速成班" },
+              { value: this.scb, name: "速成班" }
             ],
             emphasis: {
               itemStyle: {
@@ -394,19 +397,34 @@ export default {
     .el-alert {
       margin-bottom: 10px;
     }
-      /deep/ .el-card__body{
-  max-height: 350px !important; 
-  overflow: auto;
-}
+    /deep/ .el-card__body {
+      max-height: 250px !important;
+      overflow: auto;
+    }
   }
   .right {
     width: 65%;
     .el-card {
       text-align: center;
     }
-
+    .teacher-style {
+      background: #2d8cf0;
+      color: #fff;
+      font-size: 20px;
+      font-weight: bold;
+    }
+    .student-style {
+      background: #64d572;
+      color: #fff;
+      font-size: 20px;
+      font-weight: bold;
+    }
+    .nopay-style {
+      background: #f25e43;
+      color: #fff;
+      font-size: 20px;
+      font-weight: bold;
+    }
   }
-
 }
-
 </style>

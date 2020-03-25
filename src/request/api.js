@@ -19,6 +19,10 @@ export  function getMenu2(param){
 export function getLogin({...param}){
 	return postAwait(BASE_URL+'/api/login',{...param})
 }
+//登录
+export function getRegister({...param}){
+	return postAwait(BASE_URL+'/api/register',{...param})
+}
 //更新登录
 export function getUpdateLogin({...param}){
 	return postAwait(BASE_URL+'/api/updateLogin',{...param})
@@ -114,4 +118,36 @@ export function getAppointTeacher({...param}){
 //更新user信息
 export function getUpdateUser({...param}){
 	return postAwait(BASE_URL+'/api/updateUser',{...param})
+}
+//车辆
+export function getCar({...param}){
+	return postAwait(BASE_URL+'/api/car',{...param})
+}
+//无车教练列表
+export function getNotCarTeacher({...param}){
+	return postAwait(BASE_URL+'/api/notCarTeacher',{...param})
+}
+//添加car
+export function getAddCar({...param}){
+	return postAwait(BASE_URL+'/api/addCar',{...param})
+}
+//删除car
+export function getDeleteCar({...param}){
+	return postAwait(BASE_URL+'/api/deleteCar',{...param})
+}
+//消息列表
+export function getMessage({...param}){
+	return postAwait(BASE_URL+'/api/message',{...param})
+}
+//更新消息列表
+export function getUpdateMessage({...param}){
+	return postAwait(BASE_URL+'/api/updateMessage',{...param})
+}
+//插入
+export function getInsertMessage({...param}){
+	return postAwait(BASE_URL+'/api/insertMessage',{...param})
+}
+//查询该学员提交的的message
+export function getStudentMessage({...param}){
+	return postAwait(BASE_URL+'/api/studentMessage',{...param})
 }

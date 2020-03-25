@@ -9,13 +9,11 @@ Mock.mock('/getMenu1','get',{
       icon: "el-icon-s-home"
     },
     {
-      name: "人员信息",
-      haschild: true,
-      icon: "el-icon-s-custom",
-      children: [
-        { name: "教练列表", haschild: false, index: "/admin/teacherList" },
-        { name: "学员列表", haschild: false, index: "/admin/studentList" }
-      ]
+      name: "车辆管理",
+      haschild: false,
+      index: "/admin/car",
+      children: [],
+      icon: "el-icon-truck"
     },
     {
       name: "评论汇总",
@@ -23,6 +21,22 @@ Mock.mock('/getMenu1','get',{
       index: "/admin/comment",
       children: [],
       icon: "el-icon-s-comment"
+    },
+    {
+      name: "消息中心",
+      haschild: false,
+      index: "/admin/message",
+      children: [],
+      icon: "el-icon-message"
+    },
+    {
+      name: "人员信息",
+      haschild: true,
+      icon: "el-icon-s-custom",
+      children: [
+        { name: "教练列表", haschild: false, index: "/admin/teacherList" },
+        { name: "学员列表", haschild: false, index: "/admin/studentList" }
+      ]
     },
     {
       name: "发布公告",
@@ -63,5 +77,12 @@ Mock.mock(
     children: [],
     icon: "el-icon-goods",
     },
+    {
+      name: "我的建议",
+      haschild: false,
+      index: "/user/suggest",
+      children: [],
+      icon: "el-icon-message",
+      },
   ]}
 );
