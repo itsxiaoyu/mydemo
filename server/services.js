@@ -117,13 +117,14 @@ exports.addTeacher = (req, res) => {
     let gskm = req.body.gskm
     let status = req.body.status
     let sfz = req.body.sfz
+    let tage = req.body.tage
     let querysql = "select * from teacher where tname=?";
-    let sql = 'insert into teacher(tname,tphone,tgskm,tstatus,tsfz) values(?,?,?,?,?)'
+    let sql = 'insert into teacher(tname,tphone,tgskm,tstatus,tsfz,tage) values(?,?,?,?,?,?)'
     db.base(querysql, name, (result) => {
         if (result.length > 0) {
             return res.json({ status: 0, msg: '该用户已注册' })
         } else {
-            db.base(sql, [name, phone, gskm, status, sfz], (result) => {
+            db.base(sql, [name, phone, gskm, status, sfz,tage], (result) => {
                 return res.json({ status: 1, msg: '添加成功', result })
             })
         }
@@ -147,8 +148,9 @@ exports.updateTeacher = (req, res) => {
     let status = req.body.status
     let qjsj = req.body.qjsj
     let qjyy = req.body.qjyy
-    let sql = 'update teacher set tname=?,tphone=?,tsfz=?,tgskm=?,tstatus=?,tqjsj=?,tqjyy=? where tid=?'
-    db.base(sql, [name, phone, sfz, gskm, status, qjsj, qjyy, id], (result) => {
+    let tage = req.body.tage
+    let sql = 'update teacher set tname=?,tphone=?,tsfz=?,tgskm=?,tstatus=?,tqjsj=?,tqjyy=?,tage=? where tid=?'
+    db.base(sql, [name, phone, sfz, gskm, status, qjsj, qjyy,tage, id], (result) => {
         return res.json({ status: 1, msg: '更新', result })
     })
 }
@@ -344,10 +346,10 @@ exports.deleteRelease = (req, res) => {
 exports.addRelease = (req, res) => {
     let title = req.body.title
     let content = req.body.content
-    let people = req.body.people
+    // let people = req.body.people
     let time = req.body.time
-    let sql = 'INSERT INTO `release`(rtitle,rcontent,rpeople,rtime) values(?,?,?,?)'
-    db.base(sql, [title, content, people, time], (result) => {
+    let sql = 'INSERT INTO `release`(rtitle,rcontent,rtime) values(?,?,?)'
+    db.base(sql, [title, content, time], (result) => {
         return res.json({ status: 1, msg: '添加内容成功', result })
     })
 }

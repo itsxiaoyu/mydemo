@@ -97,8 +97,8 @@ export default {
           showFlag: { align: "center", width: "" }
         },
         {
-          title: "状态",
-          data: "tstatus",
+          title: "教龄",
+          data: "tage",
           showFlag: { align: "center", width: "" }
         },
         {
@@ -198,8 +198,9 @@ export default {
             }
             if (res.status === 1) {
               this.$message.success(`预约成功`);
+              this.dialogFormVisible = false;
             }
-            this.dialogFormVisible = false;
+            
           });
         }
         } else {

@@ -35,7 +35,7 @@
           <el-input
             type="password"
             v-model="ruleForm.pwd"
-            placeholder="密码"
+            placeholder="1-6位密码"
             prefix-icon="el-icon-key"
           ></el-input>
         </el-form-item>
@@ -47,7 +47,7 @@
             prefix-icon="el-icon-key"
           ></el-input>
         </el-form-item>
-        <el-form-item prop="user">
+        <el-form-item prop="sname">
           <el-input
             type="text"
             v-model="ruleForm.sname"
@@ -56,19 +56,20 @@
           ></el-input>
         </el-form-item>
         <el-form-item prop="sfz">
-          <el-input type="text" v-model="ruleForm.sfz" placeholder="身份证" prefix-icon="el-icon-postcard"></el-input>
+          <el-input type="text" v-model="ruleForm.sfz" placeholder="18位身份证号" prefix-icon="el-icon-postcard"></el-input>
         </el-form-item>
         <el-form-item prop="sphone">
           <el-input
             type="text"
             v-model="ruleForm.sphone"
-            placeholder="手机号"
+            placeholder="11位手机号"
             prefix-icon="el-icon-mobile-phone"
           ></el-input>
         </el-form-item>
         <el-form-item class="operate">
           <el-button type="primary" @click="submitForm('ruleForm')">注册</el-button>
           <el-button @click="resetForm('ruleForm')">重置</el-button>
+           <p class="operate_p" @click="goLogin">返回登录</p>
         </el-form-item>
       </el-form>
     </div>
@@ -113,9 +114,9 @@ export default {
         pwd: [{ required: true, trigger: "blur",validator: validatePass },
         { min: 1, max: 6, message: '长度在 1 到 6 个字符', trigger: 'blur' }],
         checkPass: [{ validator: validatePass2, trigger: 'blur' }],
-        sfz: [{ required: true, trigger: "blur" ,message:'请输入账号'}],
+        sfz: [{ required: true, trigger: "blur" ,message:'身份证号格式不对',pattern: /(^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)|(^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{2}$)/}],
         sname: [{ required: true, trigger: "blur" ,message:'请输入真实姓名'}],
-        sphone: [{ required: true, trigger: "blur" ,message:'请输入手机号码'}],
+        sphone: [{ required: true, trigger: "blur" ,message:'手机号码格式不对',pattern: /^1[3|4|5|7|8][0-9]\d{8}$/,}],
       }
     };
   },
@@ -155,6 +156,9 @@ export default {
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
+    },
+    goLogin(){
+      this.$router.push({path:'/login'})
     }
   }
 };

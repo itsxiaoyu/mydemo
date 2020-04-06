@@ -64,6 +64,7 @@ export default {
         econtent: this.form.econtent
       }).then(res => {
         this.getData();
+        this.form.econtent=''
       });
     }
   }

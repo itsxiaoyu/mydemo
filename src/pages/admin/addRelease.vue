@@ -1,7 +1,7 @@
 <template>
   <div style="width:90%;margin:0 auto">
     <el-form ref="form" :model="form">
-      <el-form-item label="发布对象:">
+      <!-- <el-form-item label="发布对象:">
         <el-select v-model="form.people" placeholder="请选择">
           <el-option
             v-for="item in options"
@@ -10,7 +10,7 @@
             :value="item.value"
           ></el-option>
         </el-select>
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item label="发布标题:">
         <el-col :span="6">
           <el-input v-model="form.title"></el-input>
@@ -34,7 +34,7 @@ export default {
     return {
       form: {
         title: "",
-        people: "",
+        // people: "",
         content: ''
       },
       // myhtml: "",
@@ -71,7 +71,7 @@ export default {
       getAddRelease({
         title: this.form.title,
         content: this.myhtml,
-        people: this.form.people,
+        // people: this.form.people,
         time: this.timeValue
       }).then(res => {
         this.$message({
@@ -80,7 +80,7 @@ export default {
         });
         this.form = {
           title: "",
-          people: "",
+          // people: "",
           content: ""
         };
       });

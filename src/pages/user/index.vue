@@ -62,7 +62,8 @@
       >
         <el-card class="box-card" shadow="hover">
           <div slot="header" class="clearfix">
-            <h2>{{item.rtitle}}<span style="font-weight:normal;font-size:12px;margin:20px">发布给：{{item.rpeople==='0'?'全部':item.rpeople==='1'?'学员':'教练'}} </span>
+            <h2>{{item.rtitle}}
+              <!-- <span style="font-weight:normal;font-size:12px;margin:20px">发布给：{{item.rpeople==='0'?'全部':item.rpeople==='1'?'学员':'教练'}} </span> -->
                <el-tooltip class="item" effect="dark" content="查看" placement="top-start">
                 <el-button style="float: right; margin: 0 10px" type="primary" icon="el-icon-reading" circle @click="view(item)"></el-button>
               </el-tooltip>
@@ -118,17 +119,17 @@ export default {
       this.id = ses.id;
     },
      getData(){
-      getRelease({rpeople:'1'}).then(res=>{
+      getRelease({rpeople:''}).then(res=>{
         this.releaseData=res.result
-        if(res.result.rpeople==='0'){
-          this.people='全部人'
-        }
-        if(res.result.rpeople==='1'){
-          this.people='学员'
-        }
-        if(res.result.rpeople==='2'){
-          this.people='教练'
-        }
+        // if(res.result.rpeople==='0'){
+        //   this.people='全部人'
+        // }
+        // if(res.result.rpeople==='1'){
+        //   this.people='学员'
+        // }
+        // if(res.result.rpeople==='2'){
+        //   this.people='教练'
+        // }
       })
     },
      ellipsis(value) {

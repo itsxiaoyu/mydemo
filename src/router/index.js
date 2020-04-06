@@ -90,7 +90,7 @@ export default new Router({
           path:'/admin/release',
           name:'admin/release',
           component:()=>import('@/pages/admin/release'),
-          meta:{needLogin:true,title:'发布公告'},
+          meta:{needLogin:true,title:'历史公告'},
         },
         {
           path:'/admin/addRelease',
